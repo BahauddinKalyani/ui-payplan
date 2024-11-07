@@ -15,7 +15,7 @@ import {
   } from "@/components/ui/card"
 import { withAuthRedirect } from '@/components/withAuthRedirect';
 import { CardSkeleton } from '@/components/card-skeleton';
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from '@/hooks/use-toast';
 import { authAPI } from '@/api/authAPI';
 import OpenNavigation from '@/components/open-navigation';
 

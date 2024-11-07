@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { authAPI } from '@/api/authAPI';
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import OpenNavigation from '@/components/open-navigation';
 import { CardSkeleton } from '@/components/card-skeleton';
