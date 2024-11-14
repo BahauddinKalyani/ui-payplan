@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import {
@@ -25,21 +25,22 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { transactionAPI } from '@/api/transactionAPI';
+import { formatDate } from '@/lib/utils';
+import { parseDate } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+import TransactionFormSkeleton from '@/app/dashboard/transaction-form-skeleton';
 
 const formSchema = z.object({
-  type: z.enum(['income', 'expense', 'transfer'], {
-    required_error: "Transaction type is required",
-    invalid_type_error: "Please select a valid transaction type",
-  }),
+  type: z.enum(['income', 'expense']),
   name: z.string().min(1, 'Name is required'),
   amount: z.number().positive('Amount must be positive'),
-  frequency: z.enum(['one-time', 'weekly', 'bi-weekly', 'monthly', 'semi-monthly']),
+  frequency: z.enum(['one-time', 'weekly', 'bi-weekly', 'semi-monthly', 'monthly']),
+  day: z.number().optional(),
+  date_of_transaction: z.date().optional(),
+  date_of_second_transaction: z.date().optional(),
   start_date: z.date(),
   end_date: z.date().optional(),
-  due_date: z.date().optional(),
-  auto_deduct: z.boolean().optional(),
-  day: z.number().min(1).max(7).optional(),
-  next_pay_date: z.date().optional(),
 });
 
 const daysOfWeek = [
@@ -52,32 +53,130 @@ const daysOfWeek = [
   { value: 7, label: 'Sunday' },
 ];
 
-export function TransactionForm(props, initialValues) {
-  const [selectedType, setSelectedType] = useState('income');
-  const [selectedFrequency, setSelectedFrequency] = useState('one-time');
+const frequencies = [
+  { value: 'one-time', label: 'One-time' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'bi-weekly', label: 'Bi-weekly' },
+  { value: 'semi-monthly', label: 'Semi-monthly' },
+  { value: 'monthly', label: 'Monthly' },
+];
 
+export function TransactionForm(props: { initialValues: unknown; setOpenTransactionForm: (arg0: boolean) => void; setTransactions: (arg0: any) => void; }) {
+  // const [selectedType, setSelectedType] = useState('income');
+  const [selectedFrequency, setSelectedFrequency] = useState('one-time');
+  const [transaction_id, setTransactionId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast()
+  const defaultValues = {
+    type: 'expense',
+    name: '',
+    amount: 0,
+    frequency: 'one-time',
+    start_date: new Date(),
+    end_date: new Date(),
+    date_of_transaction: new Date(),
+    date_of_second_transaction: new Date(),
+    day: 1
+  };
+  
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      type: 'income',
-      name: '',
-      amount: 0,
-      frequency: 'one-time',
-      start_date: new Date(),
-      auto_deduct: false,
-    },
+    defaultValues: defaultValues
   });
 
   useEffect(() => {
-    console.log(initialValues);
-    if (initialValues) {
-      form.reset({ initialValues });
-    }
-  }, [initialValues, form.reset]);
+    if (props.initialValues) {
+      const resetValues = {
+        ...defaultValues,
+        ...props.initialValues,
+        amount: parseFloat(props.initialValues.amount) || 0,
+        day: parseInt(props.initialValues.day) || 1,
+        start_date: props.initialValues.start_date ? parseDate(props.initialValues.start_date) : new Date(),
+        end_date: props.initialValues.end_date ? parseDate(props.initialValues.end_date) : new Date(),
+        date_of_transaction: props.initialValues.date_of_transaction ? parseDate(props.initialValues.date_of_transaction) : null,
+        date_of_second_transaction: props.initialValues.date_of_second_transaction ? parseDate(props.initialValues.date_of_second_transaction) : null,
+      };
+      form.reset(resetValues);
+      // setSelectedType(resetValues.type);
+      setSelectedFrequency(resetValues.frequency);
+      setTransactionId(props.initialValues.id);
 
-  function onSubmit(values) {
-    console.log(values);
-    props.setOpen(false);
+    }
+  }, [props.initialValues]);
+
+  function onSubmit(values: any) {
+    setLoading(true);
+    if (transaction_id) {
+      updateTransaction(values);
+    } else {
+      createTransaction(values);
+    }
+    setLoading(false);
+    props.setOpenTransactionForm(false);
+  }
+
+  const createTransaction = async (values: any) => {
+    const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
+    for (const key in values) {
+      if (date_keys.includes(key)) {
+        values[key] = formatDate(values[key]);
+      } else if (key === 'day') {
+        values[key] = parseInt(values[key]);
+      } else if (key === 'amount') {  
+        values[key] = parseFloat(values[key]);
+      }
+    }
+    values['user_id'] = localStorage.getItem('user_id');
+    try {
+      let transaction = await transactionAPI.create_transaction(values);
+      props.setTransactions((prevData: any) => [...prevData, transaction.data]);
+      toast({
+        title: "Success",
+        description: "Transaction created successfully.",
+        variant: "success",
+      })
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Transaction creation failed. "+error,
+        variant: "destructive",
+      })
+    }
+  }
+  const updateTransaction = async (values: any) => {
+    const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
+    for (const key in values) {
+      if (date_keys.includes(key)) {
+        values[key] = formatDate(values[key]);
+      } else if (key === 'day') {
+        values[key] = parseInt(values[key]);
+      } else if (key === 'amount') {  
+        values[key] = parseFloat(values[key]);
+      }
+    }
+    values['user_id'] = localStorage.getItem('user_id');
+    values['id'] = transaction_id;
+    try {
+      let transaction = await transactionAPI.update_transaction(values);
+      props.setTransactions((prevData: any) => prevData.map((t: any) => t.id === transaction_id ? transaction.data : t));
+      toast({
+        title: "Success",
+        description: "Transaction updated successfully.",
+        variant: "success",
+      })
+      setSelectedFrequency(values.frequency);
+    } catch (error) { 
+      console.log(error);
+      toast({
+        title: "Error",
+        description: "Transaction update failed. "+error,
+        variant: "destructive",
+      })
+    }
+  }
+
+  if (loading) {
+    return <TransactionFormSkeleton />;
   }
 
   return (
@@ -93,10 +192,13 @@ export function TransactionForm(props, initialValues) {
                   <FormLabel>Transaction Type</FormLabel>
                   <Select 
                     onValueChange={(value) => {
-                      field.onChange(value);
-                      setSelectedType(value);
-                    }} 
-                    defaultValue={field.value}
+                      if(value) {
+                        field.onChange(value);
+                        // setSelectedType(value);
+                      }
+                    }
+                  }
+                  value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -106,7 +208,7 @@ export function TransactionForm(props, initialValues) {
                     <SelectContent>
                       <SelectItem value="income">Income</SelectItem>
                       <SelectItem value="expense">Expense</SelectItem>
-                      <SelectItem value="transfer">Transfer</SelectItem>
+                      {/* <SelectItem value="transfer">Transfer</SelectItem> */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -135,7 +237,10 @@ export function TransactionForm(props, initialValues) {
                 <FormItem>
                   <FormLabel>Transaction Amount</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Amount" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                    <Input type="number" placeholder="Amount" {...field} onChange={e => {
+                                        const value = e.target.value;
+                                        field.onChange(value ? parseFloat(value) : 0);
+                                    }} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,10 +256,13 @@ export function TransactionForm(props, initialValues) {
                   <FormDescription>Select the frequency of the transaction (e.g., how often it occurs).</FormDescription>
                   <Select 
                     onValueChange={(value) => {
-                      field.onChange(value);
-                      setSelectedFrequency(value);
-                    }} 
-                    defaultValue={field.value}
+                        if(value) {
+                          field.onChange(value);
+                          setSelectedFrequency(value);
+                        }
+                      }
+                    }
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -162,11 +270,11 @@ export function TransactionForm(props, initialValues) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="one-time">One-time</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                      <SelectItem value="semi-monthly">Semi-monthly</SelectItem>
+                      {frequencies.map((freq) => (
+                          <SelectItem key={freq.value} value={freq.value.toString()}>
+                            {freq.label}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -183,7 +291,13 @@ export function TransactionForm(props, initialValues) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Day of the Week</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value?.toString()}>
+                    <Select onValueChange={(value) => {
+                        if(value) {
+                          value = parseInt(value);                         
+                          field.onChange(value);
+                        }
+                      }
+                    } value={field.value?.toString()}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select day" />
@@ -202,6 +316,72 @@ export function TransactionForm(props, initialValues) {
                 )}
               />
             )}
+
+            
+          {(selectedFrequency === 'one-time' || selectedFrequency === 'semi-monthly' || selectedFrequency === 'monthly') &&
+          <FormField
+              control={form.control}
+              name="date_of_transaction"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date of Transaction</FormLabel>
+                  <FormDescription>Select the date when the transaction will happen.</FormDescription>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button variant="outline">
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          }
+
+        {(selectedFrequency === 'semi-monthly') &&
+          <FormField
+              control={form.control}
+              name="date_of_second_transaction"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date of Second Transaction</FormLabel>
+                  <FormDescription>Select the date when the second semi monthly transaction will happen.</FormDescription>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button variant="outline">
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          }
+
+          {(selectedFrequency !== 'one-time') &&
+          <>
           <FormField
               control={form.control}
               name="start_date"
@@ -259,92 +439,8 @@ export function TransactionForm(props, initialValues) {
                 </FormItem>
               )}
             />
-
-            {selectedType === 'expense' && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="due_date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Due Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button variant="outline">
-                              {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="auto_deduct"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>
-                          Auto Deduct
-                        </FormLabel>
-                        <FormDescription>
-                          Check if this transaction should be automatically deducted.
-                        </FormDescription>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              </>
-            )}
-
-            {selectedType === 'income' && (selectedFrequency === 'weekly' || selectedFrequency === 'bi-weekly') && (
-              <FormField
-                control={form.control}
-                name="next_pay_date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Next Pay Date</FormLabel>
-                    <FormDescription>Select the date of your next paycheck. This date indicates when the next payment will be received.</FormDescription>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button variant="outline">
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+          </>
+          }
           </div>
         </div>
 

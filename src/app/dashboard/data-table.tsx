@@ -43,110 +43,61 @@ import {
 } from "@/components/ui/tooltip"
 import { Payment, columns } from "./columns"
 import TransactionDialog from '@/app/dashboard/transaction-dailog';
+import { transactionAPI } from "@/api/transactionAPI";
+import { useToast } from '@/hooks/use-toast';
+import DeleteAlertDialog  from '@/app/dashboard/delete-alert'
 // import { set } from "date-fns";
 
-const data: Payment[] = [
-  {
-    id: "t1",
-    type: "income",
-    name: "Salary",
-    amount: 3500,
-    frequency: "monthly",
-    day: "1"
-  },
-  {
-    id: "t2",
-    type: "expense",
-    name: "Rent",
-    amount: 1200,
-    frequency: "monthly",
-    day: "1"
-  },
-  {
-    id: "t3",
-    type: "transfer",
-    name: "Savings",
-    amount: 500,
-    frequency: "bi-weekly",
-    day: "1"
-  },
-  {
-    id: "t4",
-    type: "expense",
-    name: "Groceries",
-    amount: 150,
-    frequency: "weekly",
-    day: "1"
-  },
-  {
-    id: "t5",
-    type: "income",
-    name: "Freelance Work",
-    amount: 800,
-    frequency: "one-time",
-    day: "1"
-  },
-  {
-    id: "t6",
-    type: "expense",
-    name: "Utilities",
-    amount: 200,
-    frequency: "monthly",
-    day: "1"
-  },
-  {
-    id: "t7",
-    type: "income",
-    name: "Dividend",
-    amount: 100,
-    frequency: "semi-monthly",
-    day: "1" 
-  },
-  {
-    id: "t8",
-    type: "expense",
-    name: "Car Payment",
-    amount: 350,
-    frequency: "monthly",
-    day: "1"
-  },
-  {
-    id: "t9",
-    type: "transfer",
-    name: "Investment",
-    amount: 1000,
-    frequency: "monthly",
-    day: "1"
-  },
-  {
-    id: "t10",
-    type: "expense",
-    name: "Subscription",
-    amount: 15,
-    frequency: "monthly",
-    day: "1"
-  }
-];
 
+export default function DataTable(props) {
 
-export default function DataTable() {
-  const [open, setOpen] = React.useState(false)
+  const [openTransactionForm, setOpenTransactionForm] = React.useState(false)
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
+  const [ showDeleteAlert, setShowDeleteAlert ] = React.useState(false)
+  const [rowToDelete, setRowToDelete] = React.useState(null)
+  const { toast } = useToast()
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
-
+  const [initialValues, setInitialValues] = React.useState({})
+  
   const handleEditTransaction = (row) => {
-    console.log(row)
-    setOpen(true)
+    setOpenTransactionForm(true)
+    setInitialValues(row.original);
+  }
+
+  const handleDeleteTransaction = (row) => {
+    setShowDeleteAlert(true);
+    setRowToDelete(row);
+  }
+
+  const delete_transaction = () => { 
+    try {
+      transactionAPI.delete_transaction(rowToDelete.original.id)
+      .then(() => {
+        props.setTransactions(props.transactions.filter((item) => item.id !== rowToDelete.original.id))
+      })
+      toast({
+        title: "Success",
+        description: "Transaction deleted successfully.",
+        variant: "success",
+      })
+    } catch (error) { 
+      toast({
+        title: "Error",
+        description: "Transaction deletion failed. "+error,
+        variant: "destructive",
+      })
+    }
   }
 
   const table = useReactTable({
-    data,
+    data:props.transactions,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -167,15 +118,18 @@ export default function DataTable() {
         pageSize: 5,
       },
     },
-    handleEditTransaction: handleEditTransaction
+    handleEditTransaction: handleEditTransaction,
+    handleDeleteTransaction: handleDeleteTransaction
   }as ExtendedTableOptions<Payment>)
 
   const handleToggle = () => {
-    setOpen(!open)
+    setInitialValues(null);
+    setOpenTransactionForm(!openTransactionForm)
   }
 
   return (
     <div className="w-full">
+      <DeleteAlertDialog showDeleteAlert={showDeleteAlert} setShowDeleteAlert={setShowDeleteAlert} delete_transaction={delete_transaction}/>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter transactions..."
@@ -197,7 +151,7 @@ export default function DataTable() {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <TransactionDialog open={open} setOpen={setOpen}/>
+      <TransactionDialog openTransactionForm={openTransactionForm} setOpenTransactionForm={setOpenTransactionForm} setTransactions={props.setTransactions} initialValues={initialValues}/>
       </div>
       <div className="rounded-md border">
         <Table>

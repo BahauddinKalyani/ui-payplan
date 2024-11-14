@@ -22,14 +22,6 @@ export const authAPI = {
     },
     signup: async (credentials) => {
         try {
-            // const formData = new FormData();
-            // for (const [key, value] of Object.entries(credentials)) {
-            //     formData.append(key, value);
-            //     console.log('key', key);
-            //     console.log('value', value);
-            // }
-            // console.log('formData', formData);
-            
             const response = await axios.post(`${BASE_URL}/signup`, credentials, {
                 headers: {
                 'Content-Type': 'application/json',
@@ -48,10 +40,9 @@ export const authAPI = {
                 'Content-Type': 'application/json',
                 },
             });
-            console.log('response', response);
             return response;
         } catch (error) {
-            console.log('error', error.response?.data || error.message); 
+            // console.log('error', error.response?.data || error.message); 
             throw error.response?.data || error.message;
         }
     }
