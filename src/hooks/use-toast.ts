@@ -62,6 +62,7 @@ type Action =
     }
   | {
       type: ActionTypes["REMOVE_TOAST"]
+
       toastId?: ToasterToast["id"]
     }
 

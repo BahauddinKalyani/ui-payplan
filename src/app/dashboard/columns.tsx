@@ -2,10 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Trash2, SquarePen } from "lucide-react"
@@ -59,7 +55,6 @@ export const columns: ColumnDef<Payment>[] = [
       id: "actions",
       enableHiding: false,
       cell: ({ table ,row }) => {
-        // const payment = row.original
   
         return (
           <DropdownMenu>
