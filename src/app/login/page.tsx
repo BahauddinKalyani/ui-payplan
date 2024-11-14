@@ -71,6 +71,7 @@ function Login() {
                 router.push('/dashboard');
             }
         } catch (error) {
+            console.log(error);
             toast({
                 title: "Error",
                 description: "Login failed. Please check your credentials.",

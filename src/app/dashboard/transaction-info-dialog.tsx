@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // Adjust based on your file structure
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator"; // Adjust the import based on your file structure
-import { Avatar } from "@/components/ui/avatar";
-import { TimelineLayout } from "@/components/timeline/timeline-layout";
 
 export const TransactionInfoDialog = (props) => {
   // const {date, details} = props.data;

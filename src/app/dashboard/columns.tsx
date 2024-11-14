@@ -2,14 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Trash2, SquarePen } from "lucide-react"
@@ -63,7 +59,7 @@ export const columns: ColumnDef<Payment>[] = [
       id: "actions",
       enableHiding: false,
       cell: ({ table ,row }) => {
-        const payment = row.original
+        // const payment = row.original
   
         return (
           <DropdownMenu>

@@ -23,7 +23,6 @@ function EmailConfirmation() {
                 username: localStorage.getItem('username'),
                 confirmation_code: otp });
             if (response.status === 200) {
-                const data = response.data;
                 toast({
                     title: "Success",
                     description: "You have successfully confirmed your email.",
