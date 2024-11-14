@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { format, set } from 'date-fns';
+import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +22,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { transactionAPI } from '@/api/transactionAPI';
@@ -30,6 +29,7 @@ import { formatDate } from '@/lib/utils';
 import { parseDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import TransactionFormSkeleton from '@/app/dashboard/transaction-form-skeleton';
+import { Payment } from './columns';
 
 const formSchema = z.object({
   type: z.enum(['income', 'expense']),
@@ -61,7 +61,7 @@ const frequencies = [
   { value: 'monthly', label: 'Monthly' },
 ];
 
-export function TransactionForm(props: { initialValues: unknown; setOpenTransactionForm: (arg0: boolean) => void; setTransactions: (arg0: any) => void; }) {
+export function TransactionForm(props: { initialValues: unknown; setOpenTransactionForm: (arg0: boolean) => void; setTransactions: (arg0: Array<Payment>) => void; }) {
   // const [selectedType, setSelectedType] = useState('income');
   const [selectedFrequency, setSelectedFrequency] = useState('one-time');
   const [transaction_id, setTransactionId] = useState('');
@@ -104,7 +104,7 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
     }
   }, [props.initialValues]);
 
-  function onSubmit(values: any) {
+  function onSubmit(values: Payment) {
     setLoading(true);
     if (transaction_id) {
       updateTransaction(values);
@@ -115,7 +115,7 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
     props.setOpenTransactionForm(false);
   }
 
-  const createTransaction = async (values: any) => {
+  const createTransaction = async (values: Payment) => {
     const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
     for (const key in values) {
       if (date_keys.includes(key)) {
@@ -128,8 +128,8 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
     }
     values['user_id'] = localStorage.getItem('user_id');
     try {
-      let transaction = await transactionAPI.create_transaction(values);
-      props.setTransactions((prevData: any) => [...prevData, transaction.data]);
+      const transaction = await transactionAPI.create_transaction(values);
+      props.setTransactions((prevData: Array<Payment>) => [...prevData, transaction.data]);
       toast({
         title: "Success",
         description: "Transaction created successfully.",
@@ -143,7 +143,7 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
       })
     }
   }
-  const updateTransaction = async (values: any) => {
+  const updateTransaction = async (values: Payment) => {
     const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
     for (const key in values) {
       if (date_keys.includes(key)) {
@@ -157,8 +157,8 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
     values['user_id'] = localStorage.getItem('user_id');
     values['id'] = transaction_id;
     try {
-      let transaction = await transactionAPI.update_transaction(values);
-      props.setTransactions((prevData: any) => prevData.map((t: any) => t.id === transaction_id ? transaction.data : t));
+      const transaction = await transactionAPI.update_transaction(values);
+      props.setTransactions((prevData: Array<Payment>) => prevData.map((t: Payment) => t.id === transaction_id ? transaction.data : t));
       toast({
         title: "Success",
         description: "Transaction updated successfully.",

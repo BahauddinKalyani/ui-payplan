@@ -14,10 +14,10 @@ const CustomCalendar = ({ data }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { theme } = useTheme()
 
-  const formatDate = (dateString) => {
-    const [month, day, year] = dateString.split('-');
-    return new Date(year, month - 1, day);
-  };
+  // const formatDate = (dateString) => {
+  //   const [month, day, year] = dateString.split('-');
+  //   return new Date(year, month - 1, day);
+  // };
 
   const isDateBeforeToday = (dateString) => {
     const [month, day, year] = dateString.split('-').map(Number);
@@ -38,12 +38,12 @@ const CustomCalendar = ({ data }) => {
            inputDate.getDate() === today.getDate());
     return result;
   };
+  // const today = new Date().toLocaleDateString('en-US', {
+  //   month: '2-digit',
+  //   day: '2-digit',
+  //   year: 'numeric'
+  // }).replace(/\//g, '-');
 
-  const today = new Date().toLocaleDateString('en-US', {
-    month: '2-digit',
-    day: '2-digit',
-    year: 'numeric'
-  }).replace(/\//g, '-');
 
   useEffect(() => {
     const scrollToToday = () => {
@@ -89,13 +89,14 @@ const CustomCalendar = ({ data }) => {
     const daysInMonth = new Date(year, month, 0).getDate();
 
     const handleMoreInfo = (dateString, dateInfo) => {
-        let data = {}
+        const data = {}
         data[dateString] = dateInfo;  
         setSelectedDateData(data);
         setIsDialogOpen(true);
       };
     
-    let calendarDays = [];
+    const calendarDays = [];
+
     
     // Add padding for days before the 1st of the month
     for (let i = 0; i < firstDay; i++) {

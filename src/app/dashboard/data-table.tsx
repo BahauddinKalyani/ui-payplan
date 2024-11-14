@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -13,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import ExtendedTableOptions from './columns';
 import { Button } from "@/components/ui/button"
 // import { Checkbox } from "@/components/ui/checkbox"

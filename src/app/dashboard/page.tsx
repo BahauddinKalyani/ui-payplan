@@ -1,5 +1,5 @@
 'use client'
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { withAuth } from "@/components/withAuth";
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
