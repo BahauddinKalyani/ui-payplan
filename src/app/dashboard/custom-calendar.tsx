@@ -39,12 +39,12 @@ const CustomCalendar = (props: { data: any; }) => {
            inputDate.getDate() === today.getDate());
     return result;
   };
-
   // const today = new Date().toLocaleDateString('en-US', {
   //   month: '2-digit',
   //   day: '2-digit',
   //   year: 'numeric'
   // }).replace(/\//g, '-');
+
 
   useEffect(() => {
     const scrollToToday = () => {
@@ -97,6 +97,7 @@ const CustomCalendar = (props: { data: any; }) => {
       };
     
     const calendarDays = [];
+
     
     // Add padding for days before the 1st of the month
     for (let i = 0; i < firstDay; i++) {
