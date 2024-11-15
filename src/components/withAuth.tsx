@@ -2,8 +2,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export function withAuth(WrappedComponent, Skeleton, redirectUrl = '/login') {
-  return function AuthenticatedComponent(props) {
+import { ComponentType } from 'react';
+
+export function withAuth<T>(WrappedComponent: ComponentType<T>, Skeleton: ComponentType, redirectUrl = '/login') {
+  return function AuthenticatedComponent(props: T) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
@@ -27,6 +29,6 @@ export function withAuth(WrappedComponent, Skeleton, redirectUrl = '/login') {
       );
     }
 
-    return isAuthenticated ? <WrappedComponent {...props} /> : null;
+    return isAuthenticated ? <WrappedComponent {...(props as T & JSX.IntrinsicAttributes)} /> : null;
   };
 }

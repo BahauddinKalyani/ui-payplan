@@ -45,11 +45,11 @@ function Login() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({
+    } = useForm<{ username: string; password: string }>({
         resolver: zodResolver(loginSchema),
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: { username: string; password: string }) => {
         try {
             setLoading(true);
             const response = await authAPI.login({ 
@@ -120,7 +120,7 @@ function Login() {
                             <Button type="submit">Login</Button>
                         </form>
                         <p className="mt-4">
-                            Don't have an account? <Link href="/signup" className="text-blue-500">Sign up</Link>
+                            Don&apos;t have an account? <Link href="/signup" className="text-blue-500">Sign up</Link>
                         </p>
                         </div>
                     </CardContent>

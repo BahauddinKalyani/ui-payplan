@@ -5,12 +5,21 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Button } from "@/components/ui/button";
 // import { Badge } from "@/components/ui/badge"
 import { useTheme } from "next-themes"
-import { TransactionInfoDialog } from '@/app/dashboard/transaction-info-dialog'
+import { TransactionInfoDialog } from '@/app/dashboard/transaction-info-dialog';
+import { Payment } from './columns';
 
-const CustomCalendar = (props: { data: any; }) => {
+interface CustomCalendarProps { 
+    opening_balance: number; 
+    income_transactions: Payment[]; 
+    paid_transactions: Payment[]; 
+    unpaid_transactions: Payment[]; 
+    closing_balance: number; 
+  }
+
+const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) => {
   const todayRef = useRef(null);
   const scrollAreaRef = useRef(null);
-  const [selectedDateData, setSelectedDateData] = useState<{ [key: string]: any } | null>(null);
+  const [selectedDateData, setSelectedDateData] = useState< {[key: string]: CustomCalendarProps} | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { theme } = useTheme()
   const data = props.data;
@@ -71,11 +80,11 @@ const CustomCalendar = (props: { data: any; }) => {
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const groupByMonth = (data: { [s: string]: unknown; } | ArrayLike<unknown>) => {
-    return Object.entries(data).reduce((acc: { [key: string]: any[] }, [date, info]) => {
+    return Object.entries(data).reduce((acc: { [key: string]: { date: string; info: CustomCalendarProps }[] }, [date, info]) => {
       const [month, , year] = date.split('-');
       const key = `${month}-${year}`;
       if (!acc[key]) acc[key] = [];
-      acc[key].push({ date, info });
+      acc[key].push({ date, info: info as CustomCalendarProps });
       return acc;
     }, {});
   };
@@ -84,13 +93,13 @@ const CustomCalendar = (props: { data: any; }) => {
 
   
 
-  const renderMonthCalendar = (monthYear: string, dates: { date: string; info: any }[]) => {
+  const renderMonthCalendar = (monthYear: string, dates: { date: string; info: CustomCalendarProps }[]) => {
     const [month, year] = monthYear.split('-');
     const firstDay = new Date(parseInt(year), parseInt(month) - 1, 1).getDay();
     const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
 
-    const handleMoreInfo = (dateString: string, dateInfo: any) => {
-        const data: { [key: string]: any } = {}
+    const handleMoreInfo = (dateString: string, dateInfo: CustomCalendarProps) => {
+        const data: { [key: string]: CustomCalendarProps } = {}
         data[dateString] = dateInfo;  
         setSelectedDateData(data);
         setIsDialogOpen(true);
@@ -104,9 +113,9 @@ const CustomCalendar = (props: { data: any; }) => {
       calendarDays.push(<div key={`empty-${i}`} className="h-24"></div>);
     }
 
-    function getSmallestDayNumber(dateList: any[]) {
+    function getSmallestDayNumber(dateList: { date: string }[]) {
         // Extract day numbers and convert to integers
-        const dayNumbers = dateList.map((item: { date: { split: (arg0: string) => [any, any]; }; }) => {
+        const dayNumbers = dateList.map((item: { date: string }) => {
           const [, day] = item.date.split('-');
           return parseInt(day, 10);
         });
@@ -118,9 +127,9 @@ const CustomCalendar = (props: { data: any; }) => {
     }
 
     // Add the actual days of the month
-    for (let day = getSmallestDayNumber(dates as any[]); day <= daysInMonth; day++) {
+    for (let day = getSmallestDayNumber(dates as { date: string }[]); day <= daysInMonth; day++) {
       const dateString = `${month.padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
-      const dateInfo = dates.find((d: { date: string; }) => d.date === dateString)?.info || {};
+      const dateInfo = dates.find((d: { date: string; }) => d.date === dateString)?.info as CustomCalendarProps || {} as CustomCalendarProps;
       const isDisabled = isDateBeforeToday(dateString);
       const isToday = isDateToday(dateString);
 
