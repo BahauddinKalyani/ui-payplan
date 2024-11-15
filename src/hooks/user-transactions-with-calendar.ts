@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { transactionAPI } from '@/api/transactionAPI'
+import { Payment } from '@/app/dashboard/columns';
 
 export function useTransactionsWithCalendar(initialTransactions = []) {
-  const [transactions, setTransactionsInternal] = useState(initialTransactions);
+  const [transactions, setTransactionsInternal] = useState<Payment[]>(initialTransactions);
   const [calendarData, setCalendarData] = useState({});
 
   const fetchCalendarData = useCallback(async () => {
@@ -15,7 +16,7 @@ export function useTransactionsWithCalendar(initialTransactions = []) {
     }
   }, []);
 
-  const setTransactions = useCallback((newTransactions) => {
+  const setTransactions = useCallback((newTransactions: Payment[]) => {
     setTransactionsInternal(newTransactions);
     fetchCalendarData();
   }, [fetchCalendarData]);
@@ -25,5 +26,5 @@ export function useTransactionsWithCalendar(initialTransactions = []) {
     fetchCalendarData();
   }, [fetchCalendarData]);
 
-  return [transactions, setTransactions, calendarData];
+  return { transactions, setTransactions, calendarData };
 }

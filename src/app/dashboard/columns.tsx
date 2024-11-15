@@ -20,10 +20,9 @@ export type Payment = {
     frequency: "one-time" | "weekly" | "bi-weekly" | "monthly" | "semi-monthly"
     start_date: string
     end_date: string
-    due_date: string
-    auto_deduct: string
+    date_of_transaction: string
+    date_of_second_transaction: string
     day: string
-    next_pay_date: string
   }
 
 export const columns: ColumnDef<Payment>[] = [
@@ -71,8 +70,8 @@ export const columns: ColumnDef<Payment>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-              <DropdownMenuItem onClick={()=> table.options.handleEditTransaction(row)} ><SquarePen /> Edit</DropdownMenuItem>
-              <DropdownMenuItem onClick={()=> table.options.handleDeleteTransaction(row)}><Trash2 /> Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={()=> (table.options as ExtendedTableOptions<Payment>).handleEditTransaction?.(row)} ><SquarePen /> Edit</DropdownMenuItem>
+              <DropdownMenuItem onClick={()=> (table.options as ExtendedTableOptions<Payment>).handleDeleteTransaction?.(row)}><Trash2 /> Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
@@ -82,7 +81,7 @@ export const columns: ColumnDef<Payment>[] = [
 
 interface ExtendedTableOptions<T> extends TableOptions<T> {
     handleEditTransaction?: (value: object) => void;
-    handleDeleteTransaction?: (value: string) => void;
+    handleDeleteTransaction?: (value: object) => void;
 }
 
 export default ExtendedTableOptions

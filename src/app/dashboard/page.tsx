@@ -8,35 +8,13 @@ import Tab1 from './tab1';
 import Tab2 from './tab2';
 import { transactionAPI } from '@/api/transactionAPI';
 import { useTransactionsWithCalendar } from '@/hooks/user-transactions-with-calendar';
+import { Payment } from '@/app/dashboard/columns';
 
 const Dashboard = () => {
-
-  // const [transactions, setTransactions] = React.useState([]);
-  // const [calendarData, setCalendarData] = React.useState({});
-  const [transactions, setTransactions, calendarData] = useTransactionsWithCalendar([]);
+  const { transactions, setTransactions, calendarData } = useTransactionsWithCalendar([]);
   
   
   const [loading, setLoading] = React.useState(true);
-  // useEffect(() => {
-  //   async function fetchData() {
-      
-  //     try {
-  //       const [transactionData, calendarData] = await Promise.all([
-  //         transactionAPI.get_user_transactions(localStorage.getItem('user_id')),
-  //         transactionAPI.get_calendar_data(localStorage.getItem('user_id'))
-  //       ]);
-  
-  //       setTransactions(transactionData.data);
-  //       setCalendarData(calendarData.data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
     async function fetchTransactionData() {
@@ -59,7 +37,7 @@ const Dashboard = () => {
     return <DashboardSkeleton />;
   }
 
-  function toTitleCase(username) {
+  function toTitleCase(username: string | null) {
     if (!username) return '';
     return username.charAt(0).toUpperCase() + username.slice(1).toLowerCase();
   }
@@ -76,7 +54,7 @@ const Dashboard = () => {
             <TabsTrigger value="tab2">Transactions</TabsTrigger>
           </TabsList>
           <TabsContent value="tab1">
-            <Tab1 transactions={transactions} setTransactions={setTransactions} calendarData={calendarData}/>
+            <Tab1 transactions={transactions} setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} calendarData={calendarData}/>
           </TabsContent>
           <TabsContent value="tab2">
             <Tab2 />

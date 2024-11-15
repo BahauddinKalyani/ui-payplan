@@ -61,7 +61,7 @@ const frequencies = [
   { value: 'monthly', label: 'Monthly' },
 ];
 
-export function TransactionForm(props: { initialValues: unknown; setOpenTransactionForm: (arg0: boolean) => void; setTransactions: (arg0: Array<Payment>) => void; }) {
+export function TransactionForm(props: { initialValues: Payment|null; setOpenTransactionForm: (arg0: boolean) => void; transactions: Payment[]; setTransactions: (arg0: Array<Payment>) => void; }) {
   // const [selectedType, setSelectedType] = useState('income');
   const [selectedFrequency, setSelectedFrequency] = useState('one-time');
   const [transaction_id, setTransactionId] = useState('');
@@ -89,12 +89,12 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
       const resetValues = {
         ...defaultValues,
         ...props.initialValues,
-        amount: parseFloat(props.initialValues.amount) || 0,
+        amount: parseFloat(props.initialValues.amount.toString()) || 0,
         day: parseInt(props.initialValues.day) || 1,
         start_date: props.initialValues.start_date ? parseDate(props.initialValues.start_date) : new Date(),
         end_date: props.initialValues.end_date ? parseDate(props.initialValues.end_date) : new Date(),
-        date_of_transaction: props.initialValues.date_of_transaction ? parseDate(props.initialValues.date_of_transaction) : null,
-        date_of_second_transaction: props.initialValues.date_of_second_transaction ? parseDate(props.initialValues.date_of_second_transaction) : null,
+        date_of_transaction: props.initialValues.date_of_transaction ? parseDate(props.initialValues.date_of_transaction) : new Date(),
+        date_of_second_transaction: props.initialValues.date_of_second_transaction ? parseDate(props.initialValues.date_of_second_transaction) : new Date(),
       };
       form.reset(resetValues);
       // setSelectedType(resetValues.type);
@@ -104,7 +104,7 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
     }
   }, [props.initialValues]);
 
-  function onSubmit(values: Payment) {
+  function onSubmit(values: any) {
     setLoading(true);
     if (transaction_id) {
       updateTransaction(values);
@@ -115,21 +115,23 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
     props.setOpenTransactionForm(false);
   }
 
-  const createTransaction = async (values: Payment) => {
+  const createTransaction = async (values: any) => {
     const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
     for (const key in values) {
       if (date_keys.includes(key)) {
-        values[key] = formatDate(values[key]);
+        (values as any)[key] = formatDate((values as any)[key]);
       } else if (key === 'day') {
-        values[key] = parseInt(values[key]);
+        (values as any)[key] = parseInt((values as any)[key]);
       } else if (key === 'amount') {  
-        values[key] = parseFloat(values[key]);
+        (values as any)[key] = parseFloat((values as any)[key]);
       }
     }
-    values['user_id'] = localStorage.getItem('user_id');
+    (values as any)['user_id'] = localStorage.getItem('user_id');
     try {
       const transaction = await transactionAPI.create_transaction(values);
-      props.setTransactions((prevData: Array<Payment>) => [...prevData, transaction.data]);
+      let newTransactions = [...props.transactions];
+      newTransactions.push(transaction.data as Payment);
+      props.setTransactions(newTransactions);
       toast({
         title: "Success",
         description: "Transaction created successfully.",
@@ -143,22 +145,24 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
       })
     }
   }
-  const updateTransaction = async (values: Payment) => {
+  const updateTransaction = async (values: any) => {
     const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
     for (const key in values) {
       if (date_keys.includes(key)) {
-        values[key] = formatDate(values[key]);
+        (values as any)[key] = formatDate((values as any)[key]);
       } else if (key === 'day') {
-        values[key] = parseInt(values[key]);
+        (values as any)[key] = parseInt((values as any)[key]);
       } else if (key === 'amount') {  
-        values[key] = parseFloat(values[key]);
+        (values as any)[key] = parseFloat((values as any)[key]);
       }
     }
-    values['user_id'] = localStorage.getItem('user_id');
-    values['id'] = transaction_id;
+    (values as any)['user_id'] = localStorage.getItem('user_id');
+    (values as any)['id'] = transaction_id;
     try {
       const transaction = await transactionAPI.update_transaction(values);
-      props.setTransactions((prevData: Array<Payment>) => prevData.map((t: Payment) => t.id === transaction_id ? transaction.data : t));
+      let newTransactions = [...props.transactions];
+      newTransactions = newTransactions.map((t) => t.id === transaction_id ? transaction.data : t);
+      props.setTransactions(newTransactions);
       toast({
         title: "Success",
         description: "Transaction updated successfully.",
@@ -293,8 +297,8 @@ export function TransactionForm(props: { initialValues: unknown; setOpenTransact
                     <FormLabel>Day of the Week</FormLabel>
                     <Select onValueChange={(value) => {
                         if(value) {
-                          value = parseInt(value);                         
-                          field.onChange(value);
+                          const pvalue = parseInt(value);                         
+                          field.onChange(pvalue);
                         }
                       }
                     } value={field.value?.toString()}>

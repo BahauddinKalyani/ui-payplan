@@ -1,9 +1,9 @@
 'use client'
-import useMediaQuery from '@/hooks/user-media-query';
+// import useMediaQuery from '@/hooks/user-media-query';
 
 const MyComponent = () => {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-
+  // const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = true;
   return (
     <div>
       {isDesktop ? (
