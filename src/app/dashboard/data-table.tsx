@@ -15,16 +15,6 @@ import {
 import { Plus } from "lucide-react"
 import ExtendedTableOptions from './columns';
 import { Button } from "@/components/ui/button"
-// import { Checkbox } from "@/components/ui/checkbox"
-// import {
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -48,7 +38,12 @@ import DeleteAlertDialog  from '@/app/dashboard/delete-alert'
 // import { set } from "date-fns";
 
 
-export default function DataTable(props) {
+interface DataTableProps {
+  transactions: Payment[];
+  setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>;
+}
+
+export default function DataTable(props: DataTableProps) {
 
   const [openTransactionForm, setOpenTransactionForm] = React.useState(false)
 
@@ -57,30 +52,32 @@ export default function DataTable(props) {
     []
   )
   const [ showDeleteAlert, setShowDeleteAlert ] = React.useState(false)
-  const [rowToDelete, setRowToDelete] = React.useState(null)
+  const [rowToDelete, setRowToDelete] = React.useState<{ original: Payment } | null>(null)
   const { toast } = useToast()
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
-  const [initialValues, setInitialValues] = React.useState({})
+  const [initialValues, setInitialValues] = React.useState<object | null>(null)
   
-  const handleEditTransaction = (row) => {
+  const handleEditTransaction = (row: any) => {
     setOpenTransactionForm(true)
     setInitialValues(row.original);
   }
 
-  const handleDeleteTransaction = (row) => {
+  const handleDeleteTransaction = (row: any) => {
     setShowDeleteAlert(true);
     setRowToDelete(row);
   }
 
   const delete_transaction = () => { 
     try {
-      transactionAPI.delete_transaction(rowToDelete.original.id)
-      .then(() => {
-        props.setTransactions(props.transactions.filter((item) => item.id !== rowToDelete.original.id))
-      })
+      if (rowToDelete) {
+        transactionAPI.delete_transaction(rowToDelete.original.id)
+        .then(() => {
+          props.setTransactions(props.transactions.filter((item) => item.id !== rowToDelete.original.id))
+        })
+      }
       toast({
         title: "Success",
         description: "Transaction deleted successfully.",
@@ -117,8 +114,8 @@ export default function DataTable(props) {
         pageSize: 5,
       },
     },
-    handleEditTransaction: handleEditTransaction,
-    handleDeleteTransaction: handleDeleteTransaction
+    handleEditTransaction,
+    handleDeleteTransaction
   }as ExtendedTableOptions<Payment>)
 
   const handleToggle = () => {
@@ -150,7 +147,7 @@ export default function DataTable(props) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <TransactionDialog openTransactionForm={openTransactionForm} setOpenTransactionForm={setOpenTransactionForm} setTransactions={props.setTransactions} initialValues={initialValues}/>
+      <TransactionDialog openTransactionForm={openTransactionForm} setOpenTransactionForm={setOpenTransactionForm} transactions={props.transactions} setTransactions={props.setTransactions} initialValues={initialValues}/>
       </div>
       <div className="rounded-md border">
         <Table>

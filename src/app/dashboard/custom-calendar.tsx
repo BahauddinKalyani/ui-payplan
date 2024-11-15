@@ -7,19 +7,20 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes"
 import { TransactionInfoDialog } from '@/app/dashboard/transaction-info-dialog'
 
-const CustomCalendar = ({ data }) => {
+const CustomCalendar = (props: { data: any; }) => {
   const todayRef = useRef(null);
   const scrollAreaRef = useRef(null);
-  const [selectedDateData, setSelectedDateData] = useState(null);
+  const [selectedDateData, setSelectedDateData] = useState<{ [key: string]: any } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { theme } = useTheme()
+  const data = props.data;
 
   // const formatDate = (dateString) => {
   //   const [month, day, year] = dateString.split('-');
   //   return new Date(year, month - 1, day);
   // };
 
-  const isDateBeforeToday = (dateString) => {
+  const isDateBeforeToday = (dateString: string) => {
     const [month, day, year] = dateString.split('-').map(Number);
     const inputDate = new Date(year, month - 1, day);
     const today = new Date();
@@ -27,7 +28,7 @@ const CustomCalendar = ({ data }) => {
     return inputDate < todayCompare;
   };
 
-  const isDateToday = (dateString) => {
+  const isDateToday = (dateString: string) => {
     const [month, day, year] = dateString.split('-').map(Number);
     const inputDate = new Date(year, month - 1, day);
     const today = new Date();
@@ -48,11 +49,11 @@ const CustomCalendar = ({ data }) => {
   useEffect(() => {
     const scrollToToday = () => {
         if (todayRef.current && scrollAreaRef.current) {
-          const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+          const scrollContainer = (scrollAreaRef.current as HTMLElement).querySelector('[data-radix-scroll-area-viewport]');
           if (scrollContainer) {
             // Calculate the position to scroll to
-            const offset = scrollContainer.offsetHeight / 4.5; // One third of the viewport height
-            const topPos = todayRef.current.offsetTop - offset; // Adjust position to show one-third above
+            const offset = (scrollContainer as HTMLElement).offsetHeight / 4.5; // One third of the viewport height
+            const topPos = (todayRef.current as HTMLElement).offsetTop - offset; // Adjust position to show one-third above
     
             // Scroll to the calculated position
             scrollContainer.scrollTo({
@@ -69,8 +70,8 @@ const CustomCalendar = ({ data }) => {
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  const groupByMonth = (data) => {
-    return Object.entries(data).reduce((acc, [date, info]) => {
+  const groupByMonth = (data: { [s: string]: unknown; } | ArrayLike<unknown>) => {
+    return Object.entries(data).reduce((acc: { [key: string]: any[] }, [date, info]) => {
       const [month, , year] = date.split('-');
       const key = `${month}-${year}`;
       if (!acc[key]) acc[key] = [];
@@ -83,13 +84,13 @@ const CustomCalendar = ({ data }) => {
 
   
 
-  const renderMonthCalendar = (monthYear, dates) => {
+  const renderMonthCalendar = (monthYear: string, dates: { date: string; info: any }[]) => {
     const [month, year] = monthYear.split('-');
-    const firstDay = new Date(year, month - 1, 1).getDay();
-    const daysInMonth = new Date(year, month, 0).getDate();
+    const firstDay = new Date(parseInt(year), parseInt(month) - 1, 1).getDay();
+    const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
 
-    const handleMoreInfo = (dateString, dateInfo) => {
-        const data = {}
+    const handleMoreInfo = (dateString: string, dateInfo: any) => {
+        const data: { [key: string]: any } = {}
         data[dateString] = dateInfo;  
         setSelectedDateData(data);
         setIsDialogOpen(true);
@@ -103,9 +104,9 @@ const CustomCalendar = ({ data }) => {
       calendarDays.push(<div key={`empty-${i}`} className="h-24"></div>);
     }
 
-    function getSmallestDayNumber(dateList) {
+    function getSmallestDayNumber(dateList: any[]) {
         // Extract day numbers and convert to integers
-        const dayNumbers = dateList.map(item => {
+        const dayNumbers = dateList.map((item: { date: { split: (arg0: string) => [any, any]; }; }) => {
           const [, day] = item.date.split('-');
           return parseInt(day, 10);
         });
@@ -117,9 +118,9 @@ const CustomCalendar = ({ data }) => {
     }
 
     // Add the actual days of the month
-    for (let day = getSmallestDayNumber(dates); day <= daysInMonth; day++) {
+    for (let day = getSmallestDayNumber(dates as any[]); day <= daysInMonth; day++) {
       const dateString = `${month.padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
-      const dateInfo = dates.find(d => d.date === dateString)?.info || {};
+      const dateInfo = dates.find((d: { date: string; }) => d.date === dateString)?.info || {};
       const isDisabled = isDateBeforeToday(dateString);
       const isToday = isDateToday(dateString);
 
@@ -131,7 +132,6 @@ const CustomCalendar = ({ data }) => {
             key={dateString} 
             className={`w-full h-36 flex flex-col relative ${isDisabled ? 'opacity-50' : ''} ${isToday? 'bg-blue-500/30 backdrop-blur-md border border-blue-200/50 shadow-lg' : ''} ${hasUnpaidTransactions ? 'bg-red-500/30 backdrop-blur-md border border-red-200/50 shadow-lg': ''} ${hasPaidTransactions ? 'bg-green-500/30 backdrop-blur-md border border-green-200/50 shadow-lg': ''}`}
             ref={isToday ? todayRef : null}
-            customprops={isToday ? 'today' : 'no today'}
         >
           
           <CardHeader className="p-2 flex flex-row justify-between items-center">
@@ -189,7 +189,7 @@ const CustomCalendar = ({ data }) => {
     <div className="relative">
       <Menubar className="sticky top-0 z-10 flex justify-between">
         {dayNames.map(day => (
-          <MenubarMenu key={day} className="flex-1">
+          <MenubarMenu key={day}>
             <MenubarTrigger className="w-full justify-center cursor-default">{day}</MenubarTrigger>
           </MenubarMenu>
         ))}

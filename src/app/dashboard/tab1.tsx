@@ -2,8 +2,15 @@
 import React from 'react';
 import  DataTable  from "@/app/dashboard/data-table"
 import CustomCalendar from "@/app/dashboard/custom-calendar"
+import { Payment } from './columns';
 
-export default function Tab1(props) {
+interface Tab1Props {
+    calendarData: any;
+    transactions: any[];
+    setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>;
+}
+
+export default function Tab1(props: Tab1Props) {
     return (
         <div className="flex h-screen">
             <div className="w-3/5 p-4">

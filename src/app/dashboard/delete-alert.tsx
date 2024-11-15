@@ -9,7 +9,13 @@ import {
     AlertDialogTitle,
   } from "@/components/ui/alert-dialog"
   
-  export default function DeleteAlertDialog(props) {
+  interface DeleteAlertDialogProps {
+    showDeleteAlert: boolean;
+    delete_transaction: () => void;
+    setShowDeleteAlert: (value: boolean) => void;
+  }
+
+  export default function DeleteAlertDialog(props: DeleteAlertDialogProps) {
 
     const handleDelete = () => {
       props.delete_transaction();

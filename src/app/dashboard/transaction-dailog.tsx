@@ -9,8 +9,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { TransactionForm } from "./transaction-form"
+import { Payment } from "./columns";
 
-export default function TransactionDialog(props) {
+interface TransactionDialogProps {
+  openTransactionForm: boolean;
+  setOpenTransactionForm: (open: boolean) => void;
+  initialValues?: any;
+  setTransactions: (transactions: any) => void;
+  transactions: Payment[];
+}
+
+export default function TransactionDialog(props: TransactionDialogProps) {
   const isDesktop = true
   let title;
     if (props.initialValues) {
@@ -27,7 +36,7 @@ export default function TransactionDialog(props) {
                 {title}
             </DialogTitle>
           </DialogHeader>
-          <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues} setTransactions={props.setTransactions} />
+          <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues} transactions={props.transactions} setTransactions={props.setTransactions} />
         </DialogContent>
       </Dialog>
     )
