@@ -44,11 +44,11 @@ function Signup() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({
+    } = useForm<{ username: string; email: string; password: string }>({
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: { username: string; email: string; password: string }) => {
         try {
             setLoading(true);
             const response = await authAPI.signup(data);
@@ -65,7 +65,7 @@ function Signup() {
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Signup failed. " + error.detail,
+                description: "Signup failed. " + (error as { detail: string }).detail,
                 variant: "destructive",
             });
             setLoading(false);

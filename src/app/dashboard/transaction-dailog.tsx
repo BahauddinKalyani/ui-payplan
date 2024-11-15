@@ -14,8 +14,8 @@ import { Payment } from "./columns";
 interface TransactionDialogProps {
   openTransactionForm: boolean;
   setOpenTransactionForm: (open: boolean) => void;
-  initialValues?: any;
-  setTransactions: (transactions: any) => void;
+  initialValues?: Payment | null;
+  setTransactions: (transactions: Payment[]) => void;
   transactions: Payment[];
 }
 
@@ -36,7 +36,7 @@ export default function TransactionDialog(props: TransactionDialogProps) {
                 {title}
             </DialogTitle>
           </DialogHeader>
-          <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues} transactions={props.transactions} setTransactions={props.setTransactions} />
+          <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} />
         </DialogContent>
       </Dialog>
     )

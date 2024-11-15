@@ -58,7 +58,7 @@ export default function DataTable(props: DataTableProps) {
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
-  const [initialValues, setInitialValues] = React.useState<object | null>(null)
+  const [initialValues, setInitialValues] = React.useState<Payment | null>(null)
   
   const handleEditTransaction = (row: any) => {
     setOpenTransactionForm(true)

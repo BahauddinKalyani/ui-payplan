@@ -16,7 +16,7 @@ function EmailConfirmation() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     
-    const handleOtpComplete = async (otp) => {
+    const handleOtpComplete = async (otp: string) => {
         try {
             setLoading(true);
             const response = await authAPI.confirm_signup({ 

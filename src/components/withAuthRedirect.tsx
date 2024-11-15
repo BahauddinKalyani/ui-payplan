@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 // import { Skeleton } from "@/components/ui/skeleton";
+import { ComponentType } from 'react';
 
-export function withAuthRedirect(WrappedComponent, Skeleton, redirectUrl = '/') {
-  return function AuthRedirectComponent(props) {
+export function withAuthRedirect<T>(WrappedComponent: ComponentType<T>, Skeleton: ComponentType, redirectUrl = '/') {
+  return function AuthRedirectComponent(props: T) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isChecking, setIsChecking] = useState(true);
     const router = useRouter();
@@ -27,6 +28,6 @@ export function withAuthRedirect(WrappedComponent, Skeleton, redirectUrl = '/') 
       );
     }
 
-    return isAuthenticated ? null: <WrappedComponent {...props} />;
+    return isAuthenticated ? null: <WrappedComponent {...(props as T & JSX.IntrinsicAttributes)} />;
   };
 }
