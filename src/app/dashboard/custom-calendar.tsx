@@ -113,7 +113,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
       calendarDays.push(<div key={`empty-${i}`} className="h-24"></div>);
     }
 
-    function getSmallestDayNumber(dateList: { date: string }[]) {
+    function getDayNumber(dateList: { date: string }[], highest: boolean = false) {
         // Extract day numbers and convert to integers
         const dayNumbers = dateList.map((item: { date: string }) => {
           const [, day] = item.date.split('-');
@@ -121,13 +121,15 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
         });
       
         // Find the smallest day number
-        const smallestDay = Math.min(...dayNumbers);
-      
-        return smallestDay;
+        if(highest){
+          return Math.max(...dayNumbers)
+        } else {
+          return Math.min(...dayNumbers);
+        }
     }
 
     // Add the actual days of the month
-    for (let day = getSmallestDayNumber(dates as { date: string }[]); day <= daysInMonth; day++) {
+    for (let day = getDayNumber(dates as { date: string }[], false); day <= getDayNumber(dates as { date: string }[], true); day++) {
       const dateString = `${month.padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
       const dateInfo = dates.find((d: { date: string; }) => d.date === dateString)?.info as CustomCalendarProps || {} as CustomCalendarProps;
       const isDisabled = isDateBeforeToday(dateString);

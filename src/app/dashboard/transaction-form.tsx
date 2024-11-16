@@ -30,6 +30,7 @@ import { parseDate } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import TransactionFormSkeleton from '@/app/dashboard/transaction-form-skeleton';
 import { Payment } from './columns';
+import { Switch } from "@/components/ui/switch";
 
 const formSchema = z.object({
   type: z.enum(['income', 'expense']),
@@ -41,6 +42,7 @@ const formSchema = z.object({
   date_of_second_transaction: z.date().optional(),
   start_date: z.date(),
   end_date: z.date().optional(),
+  skip_end_date: z.boolean(),
 });
 
 const daysOfWeek = [
@@ -66,6 +68,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
   const [selectedFrequency, setSelectedFrequency] = useState('one-time');
   const [transaction_id, setTransactionId] = useState('');
   const [loading, setLoading] = useState(false);
+  const [skipEndDate, setSkipEndDate] = useState(false);
   const { toast } = useToast()
   const defaultValues = {
     type: 'expense',
@@ -76,7 +79,8 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
     end_date: new Date(),
     date_of_transaction: new Date(),
     date_of_second_transaction: new Date(),
-    day: 1
+    day: 1,
+    skip_end_date: false,
   };
   
   const form = useForm({
@@ -100,12 +104,17 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
       // setSelectedType(resetValues.type);
       setSelectedFrequency(resetValues.frequency);
       setTransactionId(props.initialValues.id);
+      setSkipEndDate(resetValues.skip_end_date);
 
     }
   }, [props.initialValues]);
 
   function onSubmit(values: any) {
     setLoading(true);
+    console.log(values);
+    if (skipEndDate) {
+      delete values.end_date; // Remove end_date if skipping
+    }
     if (transaction_id) {
       updateTransaction(values);
     } else {
@@ -169,6 +178,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
         variant: "success",
       })
       setSelectedFrequency(values.frequency);
+      setSkipEndDate(values.skip_end_date);
     } catch (error) { 
       console.log(error);
       toast({
@@ -415,13 +425,36 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
               )}
             />
 
+            {/* <div className="flex items-center">
+              <Switch checked={skipEndDate} onCheckedChange={setSkipEndDate} />
+              <label className="ml-2">Skip End Date (Transaction will occur indefinitely)</label>
+            </div> */}
+
+            <FormField control={form.control} name="skip_end_date" render={({ field }) => (
+              <FormItem className="flex items-center">
+                <Switch className='mt-1' checked={field.value}
+                onCheckedChange={(value) => {
+                  if(value) {
+                    field.onChange(value);
+                    setSkipEndDate(value);
+                  }
+                }
+              } />
+                <FormLabel className="ml-2">Skip End Date</FormLabel>
+                <FormDescription className="ml-2">Transaction will occur indefinitely.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )} 
+            />
+
+            {!skipEndDate && (
             <FormField
               control={form.control}
               name="end_date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>End Date (Optional)</FormLabel>
-                  <FormDescription>Select the date when the transaction will cease. If no end date is provided, the transaction will continue indefinitely.</FormDescription>
+                  <FormDescription>Select the date when the transaction will cease. This is the end point of the recurring transaction.</FormDescription>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -443,6 +476,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                 </FormItem>
               )}
             />
+            )}
           </>
           }
           </div>
