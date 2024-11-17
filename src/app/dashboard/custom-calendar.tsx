@@ -107,9 +107,9 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
     
     const calendarDays = [];
 
-    
+    const current_day = new Date(parseInt(year), parseInt(month) - 1, getDayNumber(dates as { date: string }[], false)).getDay()
     // Add padding for days before the 1st of the month
-    for (let i = 0; i < firstDay; i++) {
+    for (let i = 0; i < current_day; i++) {
       calendarDays.push(<div key={`empty-${i}`} className="h-24"></div>);
     }
 
