@@ -45,7 +45,7 @@ const formSchema = z.object({
   skip_end_date: z.boolean(),
 }).refine(data => {
   // Ensure start_date is not later than end_date unless skipping end date
-  return data.skip_end_date || (data.start_date <= data.end_date);
+  return data.skip_end_date || (data.start_date <= (data.end_date ?? data.start_date));
 }, {
   message: "Start date cannot be later than end date.",
   path: ["start_date"], // This will show the error under start_date field
