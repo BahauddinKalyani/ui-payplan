@@ -75,7 +75,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
   const [transaction_id, setTransactionId] = useState('');
   const [loading, setLoading] = useState(false);
   const [skipEndDate, setSkipEndDate] = useState(false);
-  const [openPopover, setOpenPopover] = useState(null);
+  const [openPopover, setOpenPopover] = useState('');
   const { toast } = useToast()
   const defaultValues = {
     type: 'expense',
@@ -95,8 +95,8 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
     defaultValues: defaultValues
   });
 
-  const handlePopoverToggle = (fieldName) => {
-    setOpenPopover(openPopover === fieldName ? null : fieldName);
+  const handlePopoverToggle = (fieldName: string) => {
+    setOpenPopover(openPopover === fieldName ? '' : fieldName);
   };
 
   useEffect(() => {
