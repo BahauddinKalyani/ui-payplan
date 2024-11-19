@@ -30,7 +30,9 @@ export default function TransactionDialog(props: TransactionDialogProps) {
   if (isDesktop) {
     return (
       <Dialog open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm}>
-        <DialogContent className="sm:max-w-[425px] md:max-w-[700px] lg:max-w-[900px]">
+        <DialogContent className="sm:max-w-[425px] md:max-w-[700px] lg:max-w-[900px]"
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}>
           <DialogHeader>
             <DialogTitle>
                 {title}

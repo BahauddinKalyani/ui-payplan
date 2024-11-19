@@ -43,6 +43,12 @@ const formSchema = z.object({
   start_date: z.date(),
   end_date: z.date().optional(),
   skip_end_date: z.boolean(),
+}).refine(data => {
+  // Ensure start_date is not later than end_date unless skipping end date
+  return data.skip_end_date || (data.start_date <= data.end_date);
+}, {
+  message: "Start date cannot be later than end date.",
+  path: ["start_date"], // This will show the error under start_date field
 });
 
 const daysOfWeek = [
@@ -69,6 +75,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
   const [transaction_id, setTransactionId] = useState('');
   const [loading, setLoading] = useState(false);
   const [skipEndDate, setSkipEndDate] = useState(false);
+  const [openPopover, setOpenPopover] = useState(null);
   const { toast } = useToast()
   const defaultValues = {
     type: 'expense',
@@ -87,6 +94,10 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues
   });
+
+  const handlePopoverToggle = (fieldName) => {
+    setOpenPopover(openPopover === fieldName ? null : fieldName);
+  };
 
   useEffect(() => {
     if (props.initialValues) {
@@ -111,7 +122,6 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
 
   function onSubmit(values: any) {
     setLoading(true);
-    console.log(values);
     if (skipEndDate) {
       delete values.end_date; // Remove end_date if skipping
     }
@@ -340,7 +350,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                 <FormItem className="flex flex-col">
                   <FormLabel>Date of Transaction</FormLabel>
                   <FormDescription>Select the date when the transaction will happen.</FormDescription>
-                  <Popover>
+                  <Popover open={openPopover === "date_of_transaction"} onOpenChange={() => handlePopoverToggle("date_of_transaction")}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button variant="outline">
@@ -352,7 +362,10 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          field.onChange(date);
+                          handlePopoverToggle("date_of_transaction");
+                        }}
                         initialFocus
                       />
                     </PopoverContent>
@@ -371,7 +384,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                 <FormItem className="flex flex-col">
                   <FormLabel>Date of Second Transaction</FormLabel>
                   <FormDescription>Select the date when the second semi monthly transaction will happen.</FormDescription>
-                  <Popover>
+                  <Popover open={openPopover === "date_of_second_transaction"} onOpenChange={() => handlePopoverToggle("date_of_second_transaction")}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button variant="outline">
@@ -383,7 +396,10 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          field.onChange(date);
+                          handlePopoverToggle("date_of_second_transaction");
+                        }}
                         initialFocus
                       />
                     </PopoverContent>
@@ -403,7 +419,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                 <FormItem className="flex flex-col">
                   <FormLabel>Start Date</FormLabel>
                   <FormDescription>Select the date when the transaction will begin. This is the starting point for the recurring transaction.</FormDescription>
-                  <Popover>
+                  <Popover open={openPopover === "start_date"} onOpenChange={() => handlePopoverToggle("start_date")}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button variant="outline">
@@ -415,7 +431,10 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          field.onChange(date);
+                          handlePopoverToggle("start_date");
+                        }}
                         initialFocus
                       />
                     </PopoverContent>
@@ -425,19 +444,12 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
               )}
             />
 
-            {/* <div className="flex items-center">
-              <Switch checked={skipEndDate} onCheckedChange={setSkipEndDate} />
-              <label className="ml-2">Skip End Date (Transaction will occur indefinitely)</label>
-            </div> */}
-
             <FormField control={form.control} name="skip_end_date" render={({ field }) => (
               <FormItem className="flex items-center">
                 <Switch className='mt-1' checked={field.value}
                 onCheckedChange={(value) => {
-                  if(value) {
                     field.onChange(value);
                     setSkipEndDate(value);
-                  }
                 }
               } />
                 <FormLabel className="ml-2">Skip End Date</FormLabel>
@@ -455,7 +467,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                 <FormItem className="flex flex-col">
                   <FormLabel>End Date (Optional)</FormLabel>
                   <FormDescription>Select the date when the transaction will cease. This is the end point of the recurring transaction.</FormDescription>
-                  <Popover>
+                  <Popover open={openPopover === "end_date"} onOpenChange={() => handlePopoverToggle("end_date")}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button variant="outline">
@@ -467,7 +479,10 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          field.onChange(date);
+                          handlePopoverToggle("end_date");
+                        }}
                         initialFocus
                       />
                     </PopoverContent>
