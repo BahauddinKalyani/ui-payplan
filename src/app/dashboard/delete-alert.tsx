@@ -27,7 +27,7 @@ import {
 
     return (
       <AlertDialog open={props.showDeleteAlert}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-sm mx-auto sm:mx-auto p-4 rounded-lg shadow-lg">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>

@@ -8,6 +8,7 @@ interface Tab1Props {
     calendarData: any;
     transactions: any[];
     setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>;
+    isMobile: boolean;
 }
 
 export default function Tab1(props: Tab1Props) {
@@ -17,7 +18,7 @@ export default function Tab1(props: Tab1Props) {
                 <CustomCalendar  data={props.calendarData}/>
             </div>
             <div className="w-2/5 pt-4 pl-4">
-                <DataTable transactions={props.transactions} setTransactions={props.setTransactions} />
+                <DataTable transactions={props.transactions} setTransactions={props.setTransactions} isMobile={props.isMobile} />
             </div>
         </div>
     )

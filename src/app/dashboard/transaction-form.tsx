@@ -69,7 +69,7 @@ const frequencies = [
   { value: 'monthly', label: 'Monthly' },
 ];
 
-export function TransactionForm(props: { initialValues: Payment|null; setOpenTransactionForm: (arg0: boolean) => void; transactions: Payment[]; setTransactions: (arg0: Array<Payment>) => void; }) {
+export function TransactionForm(props: { initialValues: Payment|null; setOpenTransactionForm: (arg0: boolean) => void; transactions: Payment[]; setTransactions: (arg0: Array<Payment>) => void; isMobile: boolean; }) {
   // const [selectedType, setSelectedType] = useState('income');
   const [selectedFrequency, setSelectedFrequency] = useState('one-time');
   const [transaction_id, setTransactionId] = useState('');
@@ -205,8 +205,8 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className={`space-y-8 ${props.isMobile ? 'flex flex-col' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}`}>
           <div className="space-y-6">
             <FormField
               control={form.control}
@@ -494,11 +494,12 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
             )}
           </>
           }
-          </div>
         </div>
-
-        <Button type="submit" className="w-full">Submit</Button>
-      </form>
+      </div>
+      <div className="p-4 flex justify-end">
+          <Button type="submit" className="px-2 py-1">Submit</Button>
+        </div>
+      </form>      
     </Form>
   );
 }
