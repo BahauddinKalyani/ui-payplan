@@ -94,6 +94,17 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
 
   const monthData = groupByMonth(data);
 
+  const parseDate = (dateString: string) => {
+    // Split the date string into parts
+    const parts = dateString.split('-'); // Assuming MM-DD-YYYY format
+    const month = parseInt(parts[0], 10); // Get month (MM)
+    const day = parseInt(parts[1], 10);   // Get day (DD)
+    const year = parseInt(parts[2], 10);  // Get year (YYYY)
+
+    // Create a new Date object
+    return new Date(year, month - 1, day); // Month is zero-indexed
+};
+
   
 
   const renderMonthCalendar = (monthYear: string, dates: { date: string; info: CustomCalendarProps }[]) => {
@@ -221,7 +232,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
       <ScrollArea className="h-[calc(100vh-60px)] w-full" ref={scrollAreaRef}>
         {Object.entries(monthData).map(([monthYear, dates]) => (
           <div key={monthYear} className="mb-6">
-            <h2 className="text-2xl font-bold mt-4 mb-4">{new Date(dates[0].date).toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
+            <h2 className="text-2xl font-bold mt-4 mb-4">{new Date(parseDate(dates[0].date)).toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
             <div className="grid grid-cols-7 gap-1">
               {renderMonthCalendar(monthYear, dates)}
             </div>
