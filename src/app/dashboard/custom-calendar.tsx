@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes"
 import { TransactionInfoDialog } from '@/app/dashboard/transaction-info-dialog';
 import { Payment } from './columns';
+import { useIsMobile } from '@/hooks/is-mobile';
 
 interface CustomCalendarProps { 
     opening_balance: number; 
@@ -22,6 +23,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
   const [selectedDateData, setSelectedDateData] = useState< {[key: string]: CustomCalendarProps} | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { theme } = useTheme()
+  const isMobile = useIsMobile()
   const data = props.data;
 
   // const formatDate = (dateString) => {
@@ -141,8 +143,9 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
       calendarDays.push(
         <Card 
             key={dateString} 
-            className={`w-full h-36 flex flex-col relative ${isDisabled ? 'opacity-50' : ''} ${isToday? 'bg-blue-500/30 backdrop-blur-md border border-blue-200/50 shadow-lg' : ''} ${hasUnpaidTransactions ? 'bg-red-500/30 backdrop-blur-md border border-red-200/50 shadow-lg': ''} ${hasPaidTransactions ? 'bg-green-500/30 backdrop-blur-md border border-green-200/50 shadow-lg': ''}`}
+            className={`w-full h-auto flex flex-col relative cursor-pointer ${isDisabled ? 'opacity-50' : ''} ${isToday? 'bg-blue-500/30 backdrop-blur-md border border-blue-200/50 shadow-lg' : ''} ${hasUnpaidTransactions ? 'bg-red-500/30 backdrop-blur-md border border-red-200/50 shadow-lg': ''} ${hasPaidTransactions ? 'bg-green-500/30 backdrop-blur-md border border-green-200/50 shadow-lg': ''}`}
             ref={isToday ? todayRef : null}
+            onClick={() => handleMoreInfo(dateString, dateInfo)}
         >
           
           <CardHeader className="p-2 flex flex-row justify-between items-center">
@@ -163,7 +166,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
           </div>
         </CardHeader>
           <CardContent className="p-2 text-xs flex-grow">
-            <p>Balance: ${dateInfo.closing_balance || 0}</p>
+            <p>{isMobile ? '' :'Balance:'} ${dateInfo.closing_balance || 0}</p>
             </CardContent>
             <CardFooter className="p-2 mt-auto">
                 <Button 
@@ -172,9 +175,11 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
                     onClick={() => {handleMoreInfo(dateString, dateInfo)}}
                 >
                        
-                    More Info
+                    
+                    {isMobile ? 'More..':'More Info'}
                 </Button>
-                {theme === 'dark' && 
+                {!isMobile && <>
+                  {theme === 'dark' && 
                         <svg className="w-3 h-3 text-black" viewBox="0 0 24 24" fill="currentColor">
                             <circle cx="12" cy="12" r="10" fill="currentColor" />
                             <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="1.5" fill="none" />
@@ -187,7 +192,8 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
                             <circle cx="12" cy="12" r="10" stroke="black" strokeWidth="1.5" fill="none" />
                             <path d="M12 8v2M12 12v6" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
-                    }
+                  }
+                </>}
             </CardFooter>
         </Card>
       );

@@ -13,10 +13,10 @@ interface Tab1Props {
 export default function Tab1(props: Tab1Props) {
     return (
         <div className="flex h-screen">
-            <div className="w-3/5 p-4">
+            <div className="w-3/5 pt-4">
                 <CustomCalendar  data={props.calendarData}/>
             </div>
-            <div className="w-2/5 p-4">
+            <div className="w-2/5 pt-4 pl-4">
                 <DataTable transactions={props.transactions} setTransactions={props.setTransactions} />
             </div>
         </div>

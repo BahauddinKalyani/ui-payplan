@@ -28,11 +28,6 @@ export const TransactionInfoDialog = (props: TransactionInfoDialogProps) => {
     const monthName = monthNames[parseInt(month) - 1];
     return `${monthName} ${day}, ${year}`;
   }
-  useEffect(() => {
-    console.log(data);
-    console.log(date);
-    console.log(props.data);
-  });
 
   return (
     <Dialog open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>

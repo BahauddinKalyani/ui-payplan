@@ -111,7 +111,7 @@ export default function DataTable(props: DataTableProps) {
     },
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: 8,
       },
     },
     handleEditTransaction,
@@ -126,14 +126,14 @@ export default function DataTable(props: DataTableProps) {
   return (
     <div className="w-full">
       <DeleteAlertDialog showDeleteAlert={showDeleteAlert} setShowDeleteAlert={setShowDeleteAlert} delete_transaction={delete_transaction}/>
-      <div className="flex items-center py-4">
+      <div className="flex items-center pb-4">
         <Input
           placeholder="Filter transactions..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm mr-2"
         />
         <TooltipProvider delayDuration={300}>
         <Tooltip>
