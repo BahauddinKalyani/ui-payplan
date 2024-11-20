@@ -80,6 +80,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
   }, []);
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dayNamesShort = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   const groupByMonth = (data: { [s: string]: unknown; } | ArrayLike<unknown>) => {
     return Object.entries(data).reduce((acc: { [key: string]: { date: string; info: CustomCalendarProps }[] }, [date, info]) => {
@@ -205,7 +206,13 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
   return (
     <div className="relative">
       <Menubar className="sticky top-0 z-10 flex justify-between">
-        {dayNames.map(day => (
+        {!isMobile && dayNames.map(day => (
+          <MenubarMenu key={day}>
+            <MenubarTrigger className="w-full justify-center cursor-default">{day}</MenubarTrigger>
+          </MenubarMenu>
+        ))}
+
+        {isMobile && dayNamesShort.map(day => (
           <MenubarMenu key={day}>
             <MenubarTrigger className="w-full justify-center cursor-default">{day}</MenubarTrigger>
           </MenubarMenu>

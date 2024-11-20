@@ -49,7 +49,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
         <CustomNavigation />
-      <main className="p-8">
+      <main className={isMobile? "p-2" :"p-8"}>
         <h1 className="text-3xl font-bold mb-4">Hey {toTitleCase(localStorage.getItem('username'))}! 💸</h1>
           {isMobile ? 
             <Tabs defaultValue="tab1"
