@@ -64,7 +64,7 @@ const Dashboard = () => {
                 <CustomCalendar data={calendarData} />
               </TabsContent>
               <TabsContent value="tab2" forceMount={true} hidden={"tab2" !== tab}>
-                <DataTable transactions={transactions} setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} />
+                <DataTable isMobile={isMobile} transactions={transactions} setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} />
               </TabsContent>
             </Tabs>
             :
@@ -72,6 +72,7 @@ const Dashboard = () => {
               transactions={transactions} 
               setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} 
               calendarData={calendarData}
+              isMobile={isMobile}
             />
           }
       </main>

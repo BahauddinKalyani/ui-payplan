@@ -8,8 +8,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer"
 import { TransactionForm } from "./transaction-form"
 import { Payment } from "./columns";
+import { useIsMobile } from "@/hooks/is-mobile";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface TransactionDialogProps {
   openTransactionForm: boolean;
@@ -20,16 +28,30 @@ interface TransactionDialogProps {
 }
 
 export default function TransactionDialog(props: TransactionDialogProps) {
-  const isDesktop = true
+  const isMobile = useIsMobile()
   let title;
     if (props.initialValues) {
     title = "Edit Transaction";
     } else {
     title = "Create Transaction";
     }
-  if (isDesktop) {
+  if (isMobile) {
     return (
-      <Dialog open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm}>
+      <Drawer open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm}>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>{title}</DrawerTitle>
+        </DrawerHeader>
+        <ScrollArea className="h-[70vh] p-4">
+        <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} isMobile={isMobile} />
+        </ScrollArea>
+      </DrawerContent>
+      </Drawer>
+    )
+  }
+
+  return (
+    <Dialog open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm}>
         <DialogContent className="sm:max-w-[425px] md:max-w-[700px] lg:max-w-[900px]"
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}>
@@ -38,9 +60,8 @@ export default function TransactionDialog(props: TransactionDialogProps) {
                 {title}
             </DialogTitle>
           </DialogHeader>
-          <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} />
+          <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} isMobile={isMobile} />
         </DialogContent>
       </Dialog>
-    )
-  }
+  )
 }

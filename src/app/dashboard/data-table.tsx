@@ -34,13 +34,14 @@ import { Payment, columns } from "./columns"
 import TransactionDialog from '@/app/dashboard/transaction-dailog';
 import { transactionAPI } from "@/api/transactionAPI";
 import { useToast } from '@/hooks/use-toast';
-import DeleteAlertDialog  from '@/app/dashboard/delete-alert'
+import DeleteAlertDialog  from '@/app/dashboard/delete-alert';
 // import { set } from "date-fns";
 
 
 interface DataTableProps {
   transactions: Payment[];
   setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>;
+  isMobile: boolean;
 }
 
 export default function DataTable(props: DataTableProps) {
@@ -122,6 +123,22 @@ export default function DataTable(props: DataTableProps) {
     setInitialValues(null);
     setOpenTransactionForm(!openTransactionForm)
   }
+
+  React.useEffect(() => {
+    console.log(props.isMobile)
+    if(props.isMobile){
+      {table
+        .getAllColumns()
+        .filter((column) => column.getCanHide())
+        .map((column) => {
+          
+          if(column.id === "type") {
+            column.toggleVisibility(false)
+            console.log(column)
+          }
+        })}
+    }
+  }, [])
 
   return (
     <div className="w-full">

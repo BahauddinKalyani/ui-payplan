@@ -98,8 +98,8 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
 
   const renderMonthCalendar = (monthYear: string, dates: { date: string; info: CustomCalendarProps }[]) => {
     const [month, year] = monthYear.split('-');
-    const firstDay = new Date(parseInt(year), parseInt(month) - 1, 1).getDay();
-    const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
+    // const firstDay = new Date(parseInt(year), parseInt(month) - 1, 1).getDay();
+    // const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
 
     const handleMoreInfo = (dateString: string, dateInfo: CustomCalendarProps) => {
         const data: { [key: string]: CustomCalendarProps } = {}
@@ -213,7 +213,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
         ))}
 
         {isMobile && dayNamesShort.map(day => (
-          <MenubarMenu key={day}>
+          <MenubarMenu key={day+Math.random()}>
             <MenubarTrigger className="w-full justify-center cursor-default">{day}</MenubarTrigger>
           </MenubarMenu>
         ))}
