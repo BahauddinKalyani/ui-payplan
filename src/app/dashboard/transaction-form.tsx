@@ -353,7 +353,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <Popover open={openPopover === "date_of_transaction"} onOpenChange={() => handlePopoverToggle("date_of_transaction")}>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button variant="outline">
+                        <Button type="button" variant="outline">
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </FormControl>
@@ -387,7 +387,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <Popover open={openPopover === "date_of_second_transaction"} onOpenChange={() => handlePopoverToggle("date_of_second_transaction")}>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button variant="outline">
+                        <Button type="button" variant="outline">
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </FormControl>
@@ -422,7 +422,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <Popover open={openPopover === "start_date"} onOpenChange={() => handlePopoverToggle("start_date")}>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button variant="outline">
+                        <Button type="button" variant="outline">
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </FormControl>
@@ -470,7 +470,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <Popover open={openPopover === "end_date"} onOpenChange={() => handlePopoverToggle("end_date")}>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button variant="outline">
+                        <Button type="button" variant="outline">
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </FormControl>
