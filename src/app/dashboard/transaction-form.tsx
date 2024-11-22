@@ -354,14 +354,9 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <FormDescription>Select the date when the transaction will happen.</FormDescription>
                   <Popover open={openPopover === "date_of_transaction"} onOpenChange={() => handlePopoverToggle("date_of_transaction")}>
                     <PopoverTrigger asChild>
-                      {/* <FormControl>
-                        <Button type="button" variant="outline">
-                          <CalendarIcon className="-mt-1 h-4 w-4 opacity-50" />
-                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                        </Button>
-                      </FormControl> */}
                       <FormControl>
                         <Button
+                          type='button'
                           variant={"outline"}
                           className={cn(
                             "justify-start text-left font-normal",
@@ -381,7 +376,6 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                           field.onChange(date);
                           handlePopoverToggle("date_of_transaction");
                         }}
-                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -401,14 +395,8 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <FormDescription>Select the date when the second semi monthly transaction will happen.</FormDescription>
                   <Popover open={openPopover === "date_of_second_transaction"} onOpenChange={() => handlePopoverToggle("date_of_second_transaction")}>
                     <PopoverTrigger asChild>
-                      {/* <FormControl>
-                        <Button type="button" variant="outline">
-                          <CalendarIcon className="-mt-1 h-4 w-4 opacity-50" />
-                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                        </Button>
-                      </FormControl> */}
-                      {/* <FormControl> */}
-                        <Button
+                      <Button
+                          type='button'
                           variant={"outline"}
                           className={cn(
                             "justify-start text-left font-normal",
@@ -428,7 +416,6 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                           field.onChange(date);
                           handlePopoverToggle("date_of_second_transaction");
                         }}
-                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -450,7 +437,14 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <Popover open={openPopover === "start_date"} onOpenChange={() => handlePopoverToggle("start_date")}>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button type="button" variant="outline">
+                      <Button
+                          type='button'
+                          variant={"outline"}
+                          className={cn(
+                            "justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
                           <CalendarIcon className="-mt-1 h-4 w-4 opacity-50" />
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
@@ -464,7 +458,6 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                           field.onChange(date);
                           handlePopoverToggle("start_date");
                         }}
-                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -499,7 +492,14 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <Popover open={openPopover === "end_date"} onOpenChange={() => handlePopoverToggle("end_date")}>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button type="button" variant="outline">
+                      <Button
+                          type='button'
+                          variant={"outline"}
+                          className={cn(
+                            "justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
                           <CalendarIcon className="-mt-1 h-4 w-4 opacity-50" />
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
@@ -513,7 +513,6 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                           field.onChange(date);
                           handlePopoverToggle("end_date");
                         }}
-                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
