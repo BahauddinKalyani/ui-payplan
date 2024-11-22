@@ -32,6 +32,7 @@ import TransactionFormSkeleton from '@/app/dashboard/transaction-form-skeleton';
 import { Payment } from './columns';
 import { Switch } from "@/components/ui/switch";
 import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils"
 
 const formSchema = z.object({
   type: z.enum(['income', 'expense']),
@@ -353,9 +354,21 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <FormDescription>Select the date when the transaction will happen.</FormDescription>
                   <Popover open={openPopover === "date_of_transaction"} onOpenChange={() => handlePopoverToggle("date_of_transaction")}>
                     <PopoverTrigger asChild>
-                      <FormControl>
+                      {/* <FormControl>
                         <Button type="button" variant="outline">
                           <CalendarIcon className="-mt-1 h-4 w-4 opacity-50" />
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </FormControl> */}
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="h-4 w-4 opacity-50" />
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </FormControl>
@@ -388,12 +401,24 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <FormDescription>Select the date when the second semi monthly transaction will happen.</FormDescription>
                   <Popover open={openPopover === "date_of_second_transaction"} onOpenChange={() => handlePopoverToggle("date_of_second_transaction")}>
                     <PopoverTrigger asChild>
-                      <FormControl>
+                      {/* <FormControl>
                         <Button type="button" variant="outline">
                           <CalendarIcon className="-mt-1 h-4 w-4 opacity-50" />
                           {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         </Button>
-                      </FormControl>
+                      </FormControl> */}
+                      {/* <FormControl> */}
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="h-4 w-4 opacity-50" />
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      {/* </FormControl> */}
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0 z-50">
                       <Calendar
