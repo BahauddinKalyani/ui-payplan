@@ -151,19 +151,36 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
 
       const hasPaidTransactions = dateInfo.paid_transactions && dateInfo.paid_transactions.length > 0;
       const hasUnpaidTransactions = dateInfo.unpaid_transactions && dateInfo.unpaid_transactions.length > 0;
+      const hasIncomeTransactions = dateInfo.income_transactions && dateInfo.income_transactions.length > 0;
+
+      // const hasPaidTransactions = true
+      // const hasUnpaidTransactions = true
+      // const hasIncomeTransactions = true
+      // const incomeTransactionsLength = 10
+      // const paidTransactionsLength = 10
+      // const unPaidTransactionsLength =  10
+
+      const paidTransactionsLength = Math.min(10, dateInfo.paid_transactions.length > 1 ? (dateInfo.paid_transactions.length + 1) : 2);
+      const unPaidTransactionsLength =  Math.min(10, dateInfo.unpaid_transactions.length > 1 ? (dateInfo.unpaid_transactions.length + 1) : 2);
+      const incomeTransactionsLength = Math.min(10, dateInfo.income_transactions.length > 1 ? (dateInfo.income_transactions.length + 1) : 2);
 
       calendarDays.push(
         <Card 
             key={dateString} 
-            className={`w-full h-auto flex flex-col relative cursor-pointer ${isDisabled ? 'opacity-50' : ''} ${isToday? 'bg-blue-500/30 backdrop-blur-md border border-blue-200/50 shadow-lg' : ''} ${hasUnpaidTransactions ? 'bg-red-500/30 backdrop-blur-md border border-red-200/50 shadow-lg': ''} ${hasPaidTransactions ? 'bg-green-500/30 backdrop-blur-md border border-green-200/50 shadow-lg': ''}`}
+            // className={`w-full h-auto border-0 border-b-2 rounded-none bg-transparent flex flex-col relative cursor-pointer ${isDisabled ? 'opacity-50' : ''} ${isToday? 'bg-blue-500/30 backdrop-blur-md border border-blue-200/50 shadow-lg' : ''} ${hasUnpaidTransactions ? 'bg-red-500/30 backdrop-blur-md border border-red-200/50 shadow-lg': ''} ${hasPaidTransactions ? 'bg-green-500/30 backdrop-blur-md border border-green-200/50 shadow-lg': ''}`}
+            className={`w-full h-auto border-0 border-b-2 rounded-none bg-transparent flex flex-col relative cursor-pointer ${isDisabled ? 'opacity-50' : ''}`}
             ref={isToday ? todayRef : null}
             onClick={() => handleMoreInfo(dateString, dateInfo)}
         >
           
           <CardHeader className="p-2 flex flex-row justify-between items-center">
-          <CardTitle className="text-sm">{day}</CardTitle>
+          <CardTitle className={`text-base`}>
+          <div className={isToday ? 'w-7 h-7 rounded-full bg-amber-600 flex items-center justify-center text-white opacity-90': ''}>
+            <span>{day}</span>
+          </div>
+          </CardTitle>
           <div className="absolute top-2 right-2 flex space-x-1">
-            {hasPaidTransactions && (
+            {/* {hasPaidTransactions && (
               <svg className="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="12" r="10" fill="currentColor" />
                 <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" fill="none" />
@@ -174,14 +191,14 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
                 <circle cx="12" cy="12" r="10" fill="currentColor" />
                 <path d="M12 8v5M12 16v.01" stroke="white" strokeWidth="2" strokeLinecap="round" />
               </svg>
-            )}
+            )} */}
           </div>
         </CardHeader>
           <CardContent className="p-2 text-xs flex-grow">
-            <p>{isMobile ? '' :'Balance:'} ${dateInfo.closing_balance || 0}</p>
+            <h4>{isMobile? '': 'Balance:'} ${dateInfo.closing_balance || 0}</h4>
             </CardContent>
             <CardFooter className="p-2 mt-auto">
-                <Button 
+                {/* <Button 
                     variant="link" 
                     className="p-0 mr-1 h-auto text-xs hover:underline"
                     onClick={() => {handleMoreInfo(dateString, dateInfo)}}
@@ -189,9 +206,12 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
                        
                     
                     {isMobile ? 'More..':'More Info'}
-                </Button>
-                {!isMobile && <>
-                  {theme === 'dark' && 
+                </Button> */}
+                {hasIncomeTransactions && <div className={`w-${incomeTransactionsLength} ml-1 h-2 rounded-full bg-blue-500`}></div>}
+                  {hasPaidTransactions && <div className={`w-${paidTransactionsLength} ml-1 h-2 rounded-full bg-green-500`}></div>}
+                  {hasUnpaidTransactions && <div className={`w-${unPaidTransactionsLength} ml-1 h-2 rounded-full bg-red-500`}></div>}
+                {/* {!isMobile && <> */}
+                  {/* {theme === 'dark' && 
                         <svg className="w-3 h-3 text-black" viewBox="0 0 24 24" fill="currentColor">
                             <circle cx="12" cy="12" r="10" fill="currentColor" />
                             <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="1.5" fill="none" />
@@ -204,12 +224,33 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
                             <circle cx="12" cy="12" r="10" stroke="black" strokeWidth="1.5" fill="none" />
                             <path d="M12 8v2M12 12v6" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
-                  }
-                </>}
+                  } */}
+                  {/* {hasPaidTransactions && (
+                    <svg className="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="12" cy="12" r="10" fill="currentColor" />
+                      <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" fill="none" />
+                    </svg>
+                  )}
+                  {hasUnpaidTransactions && (
+                    <svg className="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="12" cy="12" r="10" fill="currentColor" />
+                      <path d="M12 8v5M12 16v.01" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  )} */}
+                {/* </>} */}
             </CardFooter>
         </Card>
       );
-    }
+    // }
+    // let weekCount = 0;
+    // if ((current_day + day) % 7 === 0 && day !== getDayNumber(dates as { date: string }[], true)) {
+    //   weekCount++;
+    //   calendarDays.push(
+    //     <Separator key={`separator-${weekCount}`} className='col-span-7' />
+    //     // <div key={`separator-${weekCount}`} className="col-span-7 border-b border-gray-200 my-2"></div>
+    //   );
+    // }
+  }
 
     return calendarDays;
   };
@@ -233,6 +274,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
         {Object.entries(monthData).map(([monthYear, dates]) => (
           <div key={monthYear} className="mb-6">
             <h2 className="text-2xl font-bold mt-4 mb-4">{new Date(parseDate(dates[0].date)).toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
+            {/* <Separator /> */}
             <div className="grid grid-cols-7 gap-1">
               {renderMonthCalendar(monthYear, dates)}
             </div>
