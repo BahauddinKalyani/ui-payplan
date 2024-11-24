@@ -85,7 +85,7 @@ function Timeline(props: { data: {
         { data && data.income_transactions.length > 0 &&
         <div key="income" className="grid gap-1 text-sm relative">
             {/* <div className="aspect-square w-3 bg-gray-900 rounded-full absolute left-0 translate-x-[-29.5px] z-10 top-1 dark:bg-gray-50" /> */}
-            <div className="aspect-square w-3 bg-green-500 rounded-full absolute left-0 translate-x-[-29.5px] z-10 top-1 dark:bg-green-500" />
+            <div className="aspect-square w-3 bg-blue-500 rounded-full absolute left-0 translate-x-[-29.5px] z-10 top-1 dark:bg-blue-500" />
             <div className="text-lg font-bold text-blue-500">Income:</div>
               {data.income_transactions.map((transaction: Payment) => (
                   <div key={transaction.id} className="text-gray-500 dark:text-gray-400">
