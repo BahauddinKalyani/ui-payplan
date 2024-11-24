@@ -9,6 +9,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { useIsMobile } from '@/hooks/is-mobile';
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface TransactionInfoDialogProps {
   isDialogOpen: boolean;
@@ -45,7 +46,9 @@ export const TransactionInfoDialog = (props: TransactionInfoDialogProps) => {
           <DrawerHeader>
             <DrawerTitle>{formatDate(date)}</DrawerTitle>
           </DrawerHeader>
+          <ScrollArea className="h-[70vh] px-4">
           <Timeline data={data}/>
+          </ScrollArea>
         </DrawerContent>
       </Drawer>
     )
@@ -57,7 +60,9 @@ export const TransactionInfoDialog = (props: TransactionInfoDialogProps) => {
         <DialogHeader>
           <DialogTitle>{formatDate(date)}</DialogTitle>
         </DialogHeader>
+        <ScrollArea className="h-[70vh]">
         <Timeline data={data}/>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
