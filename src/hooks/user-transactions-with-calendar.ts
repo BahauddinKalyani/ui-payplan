@@ -18,7 +18,9 @@ export function useTransactionsWithCalendar(initialTransactions = []) {
 
   const setTransactions = useCallback((newTransactions: Payment[]) => {
     setTransactionsInternal(newTransactions);
-    fetchCalendarData();
+    if(transactions.length > 0) {
+      fetchCalendarData();
+    }
   }, [fetchCalendarData]);
 
   // Initial fetch of calendar data

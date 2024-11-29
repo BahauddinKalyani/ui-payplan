@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { authAPI } from '@/api/authAPI';
 import { ComponentType } from 'react';
 
 export function withAuth<T>(WrappedComponent: ComponentType<T>, Skeleton: ComponentType, redirectUrl = '/login') {
@@ -12,13 +12,16 @@ export function withAuth<T>(WrappedComponent: ComponentType<T>, Skeleton: Compon
 
     useEffect(() => {
       async function checkAuth() {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          router.push(redirectUrl);
-        } else {
-            setIsAuthenticated(true);
+        try {
+          const response = await authAPI.checkAuth();
+          if (!response) {
+            router.push(redirectUrl);
+          } else {
+              setIsAuthenticated(true);
+          }
+        } finally {
+          setIsLoading(false);
         }
-        setIsLoading(false);
       }
       checkAuth();
     }, [router]);

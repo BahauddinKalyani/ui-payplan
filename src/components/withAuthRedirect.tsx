@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 // import { Skeleton } from "@/components/ui/skeleton";
 import { ComponentType } from 'react';
+import { authAPI } from '@/api/authAPI';
 
 export function withAuthRedirect<T>(WrappedComponent: ComponentType<T>, Skeleton: ComponentType, redirectUrl = '/') {
   return function AuthRedirectComponent(props: T) {
@@ -10,16 +11,16 @@ export function withAuthRedirect<T>(WrappedComponent: ComponentType<T>, Skeleton
     const router = useRouter();
 
     useEffect(() => {
-      const checkAuth = async () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            router.push(redirectUrl);
-            setIsAuthenticated(true);
+      const checkwithAuth = async () => {
+        const response = await authAPI.checkAuth();
+        if (response) {
+          router.push(redirectUrl);
+          setIsAuthenticated(true);
         }
         setIsChecking(false);
       };
 
-      checkAuth();
+      checkwithAuth();
     }, [router]);
 
     if (isChecking) {

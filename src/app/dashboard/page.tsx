@@ -17,6 +17,7 @@ const Dashboard = () => {
   const { transactions, setTransactions, calendarData } = useTransactionsWithCalendar([]);
   const isMobile = useIsMobile()
   const [tab, setActiveTab] = React.useState('tab1');
+  const [hasTFetched, setHasTFetched] = React.useState(false);
   
   const [loading, setLoading] = React.useState(true);
 
@@ -33,8 +34,10 @@ const Dashboard = () => {
         setLoading(false);
       }
     }
-
-    fetchTransactionData();
+    if (!hasTFetched) {
+      setHasTFetched(true);
+      fetchTransactionData();
+    }
   }, [setTransactions]);
   
   if (loading) {
