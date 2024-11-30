@@ -59,7 +59,6 @@ interface State {
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
 
 const addToRemoveQueue = (toastId: string) => {
-  console.log(actionTypes)
   if (toastTimeouts.has(toastId)) {
     return
   }

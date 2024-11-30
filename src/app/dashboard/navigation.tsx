@@ -22,7 +22,7 @@ import { useRouter } from 'next/navigation';
 import { authAPI } from '@/api/authAPI';
 import { useToast } from '@/hooks/use-toast';
 
-export default function CustomNavigation() {
+export default function CustomNavigation(props: { isMobile: boolean }) {
   const router = useRouter();
   const { toast } = useToast();
   const { theme, setTheme } = useTheme()
@@ -55,8 +55,8 @@ export default function CustomNavigation() {
   // const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <div className="sticky px-8 top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+    <div className={`sticky ${props.isMobile? 'pl-2 pr-6': 'px-8'} top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60`}>
+      <div className="flex h-14 items-center">
         <div className="cursor-pointer">
           <Link href="/" legacyBehavior passHref>
           <h3>MyTwoney</h3>

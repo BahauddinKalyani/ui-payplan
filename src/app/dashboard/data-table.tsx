@@ -125,7 +125,6 @@ export default function DataTable(props: DataTableProps) {
   }
 
   React.useEffect(() => {
-    console.log(props.isMobile)
     if(props.isMobile){
       {table
         .getAllColumns()
