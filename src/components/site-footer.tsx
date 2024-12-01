@@ -78,7 +78,7 @@ export function SiteFooter() {
                 className="h-8 w-8 text-primary"
               />
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                MuTwoney
+                MyTwoney
               </span>
             </Link>
             <p className="max-w-xs">UI Library for Design Engineers</p>

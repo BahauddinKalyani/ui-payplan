@@ -71,7 +71,14 @@ const frequencies = [
   { value: 'monthly', label: 'Monthly' },
 ];
 
-export function TransactionForm(props: { initialValues: Payment|null; setOpenTransactionForm: (arg0: boolean) => void; transactions: Payment[]; setTransactions: (arg0: Array<Payment>) => void; isMobile: boolean; }) {
+export function TransactionForm(props: {
+  initialValues: Payment|null; 
+  setOpenTransactionForm: (arg0: boolean) => void; 
+  transactions: Payment[]; 
+  setTransactions: (arg0: Array<Payment>) => void; 
+  isMobile: boolean; 
+  TransactionType: string; }) 
+{
   // const [selectedType, setSelectedType] = useState('income');
   const [selectedFrequency, setSelectedFrequency] = useState('one-time');
   const [transaction_id, setTransactionId] = useState('');
@@ -80,7 +87,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
   const [openPopover, setOpenPopover] = useState('');
   const { toast } = useToast()
   const defaultValues = {
-    type: 'expense',
+    type: props.TransactionType === 'income' ? 'income' : 'expense',
     name: '',
     amount: 0,
     frequency: 'one-time',
@@ -216,7 +223,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Transaction Type</FormLabel>
-                  <Select 
+                  <Select disabled={props.TransactionType !== ''}
                     onValueChange={(value) => {
                       if(value) {
                         field.onChange(value);

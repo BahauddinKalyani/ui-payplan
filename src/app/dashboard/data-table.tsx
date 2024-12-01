@@ -42,6 +42,8 @@ interface DataTableProps {
   transactions: Payment[];
   setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>;
   isMobile: boolean;
+  isMain: boolean;
+  type: string;
 }
 
 export default function DataTable(props: DataTableProps) {
@@ -143,19 +145,19 @@ export default function DataTable(props: DataTableProps) {
     <div className="w-full">
       <DeleteAlertDialog showDeleteAlert={showDeleteAlert} setShowDeleteAlert={setShowDeleteAlert} delete_transaction={delete_transaction}/>
       <div className="flex items-center pb-4">
-        <Input
+        { props.isMain && <Input
           placeholder="Filter transactions..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm mr-2"
-        />
+        /> }
         <TooltipProvider delayDuration={300}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button className="ml-auto" variant="default" onClick={handleToggle}>
-              <Plus />
+              Add Transaction<Plus />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
@@ -163,7 +165,7 @@ export default function DataTable(props: DataTableProps) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <TransactionDialog openTransactionForm={openTransactionForm} setOpenTransactionForm={setOpenTransactionForm} transactions={props.transactions} setTransactions={props.setTransactions} initialValues={initialValues}/>
+      <TransactionDialog TransactionType={props.type} openTransactionForm={openTransactionForm} setOpenTransactionForm={setOpenTransactionForm} transactions={props.transactions} setTransactions={props.setTransactions} initialValues={initialValues}/>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -215,6 +217,7 @@ export default function DataTable(props: DataTableProps) {
           </TableBody>
         </Table>
       </div>
+      { props.isMain &&
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">
           <Button
@@ -234,7 +237,7 @@ export default function DataTable(props: DataTableProps) {
             Next
           </Button>
         </div>
-      </div>
+      </div>}
     </div>
   )
 }

@@ -1,14 +1,17 @@
 'use client'
 import React from 'react';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { authAPI } from '@/api/authAPI';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import OpenNavigation from '@/components/open-navigation';
 import { CardSkeleton } from '@/components/card-skeleton';
 import { withAuthRedirect } from '@/components/withAuthRedirect';
+import { ChevronLeft } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 function EmailConfirmation() {
     
@@ -46,34 +49,48 @@ function EmailConfirmation() {
     return (
         <>
         { loading ? <CardSkeleton /> :
-        <div className="flex flex-col min-h-screen">
-        <OpenNavigation /> {/* Your navigation component */}
-        <main className="flex-grow flex justify-center items-center">
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <CardTitle>Confirm Your Email</CardTitle>
-                    <CardDescription>Enter the confirmation code sent to your email</CardDescription>
-                </CardHeader>
-                <CardContent className="flex justify-center">
-                    <div className="space-y-2">
-                        <InputOTP maxLength={6} onComplete={handleOtpComplete}>
-                            <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                            <InputOTPSlot index={3} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
-                            </InputOTPGroup>
-                        </InputOTP>
-                        <div className="text-center text-sm">
-                            <>Enter confirmation code here.</>
+        <div className="container flex h-screen w-screen flex-col items-center justify-center">
+            <Link
+            href="/"
+            className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "absolute left-4 top-4 md:left-8 md:top-8"
+            )}
+            >
+            <>
+                <ChevronLeft className="mr-2 h-4 w-4" />
+                Back
+            </>
+            </Link>
+            <div className="flex flex-col min-h-screen">
+            <main className="flex-grow flex justify-center items-center">
+                <Card className="w-full max-w-md border-none bg-transparent text-center">
+                    <CardHeader>
+                        <CardTitle>Confirm Your Email</CardTitle>
+                        <CardDescription>Enter the confirmation code sent to your email</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex justify-center">
+                        <div className="space-y-2">
+                            <InputOTP maxLength={6} onComplete={handleOtpComplete}>
+                                <InputOTPGroup>
+                                <InputOTPSlot index={0} />
+                                <InputOTPSlot index={1} />
+                                <InputOTPSlot index={2} />
+                                <InputOTPSlot index={3} />
+                                <InputOTPSlot index={4} />
+                                <InputOTPSlot index={5} />
+                                </InputOTPGroup>
+                            </InputOTP>
+                            <div className="text-center text-sm">
+                                <>Enter confirmation code here.</>
+                            </div>
                         </div>
-                    </div>
-                </CardContent>
-            </Card>
-        </main>
-    </div>}</>
+                    </CardContent>
+                </Card>
+            </main>
+        </div>
+        </div>}
+    </>
     );
 }
 

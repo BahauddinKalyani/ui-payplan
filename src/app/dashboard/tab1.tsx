@@ -18,7 +18,12 @@ export default function Tab1(props: Tab1Props) {
                 <CustomCalendar  data={props.calendarData}/>
             </div>
             <div className="w-2/5 pt-4 pl-4">
-                <DataTable transactions={props.transactions} setTransactions={props.setTransactions} isMobile={props.isMobile} />
+                <DataTable 
+                    type='' 
+                    isMain={true} 
+                    transactions={props.transactions} 
+                    setTransactions={props.setTransactions} 
+                    isMobile={props.isMobile} />
             </div>
         </div>
     )

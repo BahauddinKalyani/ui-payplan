@@ -14,11 +14,9 @@ export const authAPI = {
                 return true;
             }
             return false;
-            // return response;
         } catch (error) {
-            console.log('error', error.response?.data || error.message || error.detail);
             return false;
-            // throw error.response?.data || error.message || error.detail;
+            throw error.response?.data || error.message || error.detail;
         }
     },
     login: async (credentials) => {

@@ -25,6 +25,7 @@ interface TransactionDialogProps {
   initialValues?: Payment | null;
   setTransactions: (transactions: Payment[]) => void;
   transactions: Payment[];
+  TransactionType: string;
 }
 
 export default function TransactionDialog(props: TransactionDialogProps) {
@@ -38,12 +39,13 @@ export default function TransactionDialog(props: TransactionDialogProps) {
   if (isMobile) {
     return (
       <Drawer open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm}>
-      <DrawerContent>
+      <DrawerContent onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}>
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
         </DrawerHeader>
         <ScrollArea className="h-[70vh] p-4">
-        <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} isMobile={isMobile} />
+        <TransactionForm TransactionType={props.TransactionType} setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} isMobile={isMobile} />
         </ScrollArea>
       </DrawerContent>
       </Drawer>
@@ -60,7 +62,7 @@ export default function TransactionDialog(props: TransactionDialogProps) {
                 {title}
             </DialogTitle>
           </DialogHeader>
-          <TransactionForm setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} isMobile={isMobile} />
+          <TransactionForm TransactionType={props.TransactionType} setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} isMobile={isMobile} />
         </DialogContent>
       </Dialog>
   )

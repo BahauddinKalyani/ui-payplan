@@ -12,16 +12,21 @@ import { Payment } from '@/app/dashboard/columns';
 import { useIsMobile } from '@/hooks/is-mobile';
 import  DataTable  from "@/app/dashboard/data-table"
 import CustomCalendar from "@/app/dashboard/custom-calendar"
+import OnboardingDialog from "@/app/dashboard/onboarding-welcome-dailog"
 
 const Dashboard = () => {
   const { transactions, setTransactions, calendarData } = useTransactionsWithCalendar([]);
   const isMobile = useIsMobile()
   const [tab, setActiveTab] = React.useState('tab1');
   const [hasTFetched, setHasTFetched] = React.useState(false);
+  const [firstLogin, setFirstLogin] = React.useState(true);
   
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
+    if (localStorage.getItem('firstName')) {
+      setFirstLogin(false);
+    }
     async function fetchTransactionData() {
       try {
         setLoading(true);
@@ -52,6 +57,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <CustomNavigation isMobile={isMobile} />
+      <OnboardingDialog isMobile={isMobile} open={firstLogin} setOpen={setFirstLogin} transactions={transactions} setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} />
       <main className={isMobile? "p-2" :"p-8"}>
         <h1 className="text-3xl font-bold mb-4">Hey {toTitleCase(localStorage.getItem('username'))}! 💸</h1>
           {isMobile ? 
@@ -67,7 +73,12 @@ const Dashboard = () => {
                 <CustomCalendar data={calendarData} />
               </TabsContent>
               <TabsContent value="tab2" forceMount={true} hidden={"tab2" !== tab}>
-                <DataTable isMobile={isMobile} transactions={transactions} setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} />
+                <DataTable 
+                  type='' 
+                  isMain={true} 
+                  isMobile={isMobile} 
+                  transactions={transactions} 
+                  setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} />
               </TabsContent>
             </Tabs>
             :
