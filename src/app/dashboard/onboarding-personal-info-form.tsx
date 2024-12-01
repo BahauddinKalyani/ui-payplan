@@ -51,6 +51,9 @@ export function PersonalInfoForm(props: {
         })
         props.setLoading(false)
         props.setCurrentStep(1)
+        localStorage.setItem('firstName', values.firstName)
+        localStorage.setItem('lastName', values.lastName || '')
+        localStorage.setItem('age', String(values.age))
       } else {
         props.setLoading(false)
         toast({
