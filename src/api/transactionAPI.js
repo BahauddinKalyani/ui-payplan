@@ -83,6 +83,19 @@ export const transactionAPI = {
         } catch (error) {
             throw error.response?.data || error.message;
         }
+    },
+    mark_onboarding_completed: async (username, attributes) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/users/${username}/mark-onboarding-completed`, attributes, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
     }
+
 
 };

@@ -24,7 +24,7 @@ const Dashboard = () => {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    setFirstLogin((localStorage.getItem('firstName')?.length ?? 0) >= 2? false : true);
+    setFirstLogin((localStorage.getItem('onboardingCompleted') ?? 'false') === 'true' ? false : true);
     async function fetchTransactionData() {
       try {
         setLoading(true);

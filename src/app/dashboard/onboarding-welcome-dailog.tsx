@@ -17,14 +17,13 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button";
 import Image from 'next/image';
 import { ChevronRight  } from "lucide-react";
-// import { PersonalInfoForm } from "./onboarding-personal-info-form";
-// import TransactionFormSkeleton from '@/app/dashboard/transaction-form-skeleton';
 import { useState } from "react";
 import Stepper from '@/components/ui/stepper';
 import  DataTable  from "@/app/dashboard/data-table"
 import { Payment } from '@/app/dashboard/columns';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { set } from "date-fns";
+import { transactionAPI } from "@/api/transactionAPI";
+import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 
 interface OnboardingDialogProps {
   open: boolean;
@@ -36,12 +35,11 @@ interface OnboardingDialogProps {
 
 export default function OnboardingDialog(props: OnboardingDialogProps) {
   const isMobile = props.isMobile;
-
   const [currentStep, setCurrentStep] = useState(-1);
   const [error, setError] = useState<Error | null>({name: '', message: ''});
   const [income, setIncome] = useState<Payment[]>(props.transactions.filter((item) => item.type === 'income'));
   const [expense, setExpense] = useState<Payment[]>(props.transactions.filter((item) => item.type === 'expense'));
-
+  const [loading, setLoading] = useState(false);
   const steps = [
     { title: 'Step 1', description: 'Add Your Income' },
     { title: 'Step 2', description: 'Add Your Expenses' },
@@ -52,11 +50,29 @@ export default function OnboardingDialog(props: OnboardingDialogProps) {
     if (isOpen) props.setOpen(true)
   }
 
+  const updateStatus = async () => {
+    setLoading(true);
+    try {
+      const response = await transactionAPI.mark_onboarding_completed(
+          localStorage.getItem('username') ?? '',
+          { onboardingCompleted: 'true' });
+
+      if (response.status === 200) {
+        setLoading(false);
+        localStorage.setItem('onboardingCompleted', 'true');
+        props.setOpen(false);
+      }
+    } catch (error) {
+      console.error('Error updating onboarding status:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const handlePrimaryClick = () => {
     if (currentStep === 2) {
       props.setTransactions([...income, ...expense]);
-      props.setOpen(false);
-      return;
+      updateStatus();
     }
     if ((currentStep +1) <= steps.length+1) {
       if (currentStep === 0 && income.length === 0) {
@@ -83,6 +99,8 @@ export default function OnboardingDialog(props: OnboardingDialogProps) {
   if (isMobile) {
     return (
       <Drawer open={props.open} onOpenChange={handleOpenChange}>
+      { loading && <DashboardSkeleton />}
+      { !loading &&
       <DrawerContent onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
           data-vaul-no-drag>
@@ -125,13 +143,15 @@ export default function OnboardingDialog(props: OnboardingDialogProps) {
               <ChevronRight className="mr-2 h-4 w-4" />
             </Button>
         </DrawerFooter>
-      </DrawerContent>
+      </DrawerContent>}
       </Drawer>
     )
   }
 
   return (
     <Dialog open={props.open} onOpenChange={handleOpenChange}>
+      { loading && <DashboardSkeleton />}
+      { !loading &&
         <DialogContent className="sm:max-w-[425px] md:max-w-[700px] lg:max-w-[900px] p-8 [&>button]:hidden"
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}>
@@ -173,7 +193,7 @@ export default function OnboardingDialog(props: OnboardingDialogProps) {
               <ChevronRight className="mr-2 h-4 w-4" />
             </Button>
           </DialogFooter>
-        </DialogContent>
+        </DialogContent>}
       </Dialog>
   )
 }

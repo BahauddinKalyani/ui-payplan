@@ -59,6 +59,7 @@ function Login() {
                 localStorage.setItem('lastName', responseData.last_name);
                 localStorage.setItem('email', responseData.email);
                 localStorage.setItem('age', responseData.age);
+                localStorage.setItem('onboardingCompleted', responseData.onboardingCompleted);
                 toast({
                     title: "Success",
                     description: "You have successfully logged in.",

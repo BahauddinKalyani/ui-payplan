@@ -30,7 +30,7 @@ const schema = z.object({
         .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character")
         .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
         .regex(/[a-z]/, "Password must contain at least one lowercase letter"),
-    privacyPolicy: z.boolean().refine(value => value === true, "You must agree to the Privacy Policy"),
+    privacy_policy: z.boolean().refine(value => value === true, "You must agree to the Privacy Policy"),
 });
 
 function Signup() {
@@ -42,7 +42,7 @@ function Signup() {
         username: '',
         email: '',
         password: '',
-        privacyPolicy: false,
+        privacy_policy: false,
     };
     const {
         register,
@@ -153,12 +153,12 @@ function Signup() {
                                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                             </div>
                             <div className="flex items-center space-x-2">
-                                <Checkbox id="privacyPolicy" defaultChecked={false} {...register('privacyPolicy')} onCheckedChange={(value: boolean) => setValue('privacyPolicy', value)} />
-                                <label htmlFor="privacyPolicy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                <Checkbox id="privacy_policy" defaultChecked={false} {...register('privacy_policy')} onCheckedChange={(value: boolean) => setValue('privacy_policy', value)} />
+                                <label htmlFor="privacy_policy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                     I agree to the <Link href="/privacy-policy" className="text-blue-500">Terms and Conditions</Link>
                                 </label>
                             </div>
-                            {errors.privacyPolicy && <p className="text-red-500 text-sm mt-1">{errors.privacyPolicy.message}</p>}
+                            {errors.privacy_policy && <p className="text-red-500 text-sm mt-1">{errors.privacy_policy.message}</p>}
                             <Button type="submit" className="w-full">Register</Button>
                         </form>
                         <div className="relative">
