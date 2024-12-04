@@ -36,6 +36,27 @@ export default function TransactionDialog(props: TransactionDialogProps) {
     } else {
     title = "Create Transaction";
     }
+  
+    React.useEffect(() => {
+      const onVisualViewportChange = () => {
+        const visualViewportHeight = window.visualViewport?.height ?? window.innerHeight;
+        const keyboardHeight = window.innerHeight - visualViewportHeight;
+        const drawerElement = document.querySelector('.drawer-content') as HTMLElement;
+        
+        if (drawerElement) {
+          if (keyboardHeight > 0) {
+            // Keyboard is open
+            // drawerElement.style.height = `${visualViewportHeight}px`;
+          } else {
+            // Keyboard is closed
+            drawerElement.style.height = '80vh'; // Reset to default height
+          }
+        }
+      };
+    
+      window.visualViewport?.addEventListener("resize", onVisualViewportChange);
+      return () => window.visualViewport?.removeEventListener("resize", onVisualViewportChange);
+    }, []);
   if (isMobile) {
     return (
       <Drawer open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm}>

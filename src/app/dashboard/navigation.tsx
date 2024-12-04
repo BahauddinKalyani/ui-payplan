@@ -38,7 +38,7 @@ export default function CustomNavigation(props: { isMobile: boolean }) {
             description: 'You have been logged out successfully',
             variant: 'success',
           });
-          router.push('/login');
+          router.push('/');
         }
       } catch (error) {
         toast({
