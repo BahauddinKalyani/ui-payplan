@@ -1,0 +1,12 @@
+{
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/login/page": "app/login/page.js",
+  "/media-query/page": "app/media-query/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/email-confirmation/page": "app/email-confirmation/page.js",
+  "/(marketing)/page": "app/(marketing)/page.js",
+  "/(marketing)/blog/[slug]/page": "app/(marketing)/blog/[slug]/page.js",
+  "/(marketing)/blog/page": "app/(marketing)/blog/page.js"
+}

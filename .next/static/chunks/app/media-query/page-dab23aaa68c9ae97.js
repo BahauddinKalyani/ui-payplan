@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[262],{4382:(e,s,i)=>{Promise.resolve().then(i.bind(i,1483))},1483:(e,s,i)=>{"use strict";i.r(s),i.d(s,{default:()=>d});var r=i(7437);let d=()=>(0,r.jsx)("div",{children:(0,r.jsx)("p",{children:"This is a desktop view"})})}},e=>{var s=s=>e(e.s=s);e.O(0,[130,215,744],()=>s(4382)),_N_E=e.O()}]);
