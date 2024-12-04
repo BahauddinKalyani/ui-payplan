@@ -127,9 +127,35 @@ body {
 }
 
 @layer base {
+  :root {
+    --chart-1: 349 100% 55.5%;
+    --chart-2: 0 0 90;
+    --chart-3: 0 0 83;
+    --chart-4: 0 0 64;
+    --chart-5: 27 87% 67%;
+    font-family: Inter, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "salt";
+  }
+
+  .dark {
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+
   * {
     @apply border-border;
   }
+
+  @supports (font-variation-settings: normal) {
+    :root {
+      font-family: InterVariable, sans-serif;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11", "salt";
+    }
+  }
+
   body {
     @apply bg-background text-foreground;
   }

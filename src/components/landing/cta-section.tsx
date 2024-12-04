@@ -11,9 +11,6 @@ export default function CallToActionSection() {
     <section id="cta">
       <div className="container px-4 py-12 md:px-6 md:py-24 lg:py-32">
         <div className="mx-auto space-y-4 py-6 text-center">
-          <h2 className="font-mono text-[14px] font-medium tracking-tight text-primary">
-            Call to Action
-          </h2>
           <h4 className="mx-auto mb-2 max-w-3xl text-balance text-[42px] font-medium tracking-tighter">
             Unlock Your Potential with Our Platform
           </h4>

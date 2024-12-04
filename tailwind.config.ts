@@ -1,7 +1,9 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
+import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindTypography from "@tailwindcss/typography";
 
-const config = {
+const config: Config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -162,9 +164,11 @@ const config = {
   			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
   			ripple: 'ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite'
   		}
-  	}
-  },
-  plugins: [require("tailwindcss-animate")],
+	},
+	// plugins: [tailwindcssAnimate, tailwindTypography],
+	},//theme
+//   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [tailwindcssAnimate, tailwindTypography],
 } satisfies Config;
 
 export default config;

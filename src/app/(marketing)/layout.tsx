@@ -1,6 +1,6 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { SiteBanner } from "@/components/site-banner";
+// import { SiteBanner } from "@/components/site-banner";
 
 interface MarketingLayoutProps {
   children: React.ReactNode;
