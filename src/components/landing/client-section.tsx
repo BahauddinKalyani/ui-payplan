@@ -5,45 +5,15 @@ export default function ClientSection() {
       className="text-center mx-auto max-w-[80rem] px-6 md:px-8"
     >
       <div className="py-14">
-        <div className="mx-auto max-w-screen-xl px-4 md:px-8">
-          <h2 className="text-center text-sm font-semibold text-gray-600">
-            TRUSTED BY TEAMS FROM AROUND THE WORLD
+        <div className="mx-auto max-w-5xl text-center px-4 md:px-8">
+          <h2 className="text-5xl font-bold tracking-tight text-black dark:text-white sm:text-6xl">
+          Manage Cash Flow with Ease
           </h2>
-          <div className="mt-6">
-            <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-16 [&_path]:fill-white">
-              <li>
-                <img
-                  src={`https://cdn.magicui.design/companies/Google.svg`}
-                  className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
-                />
-              </li>
-              <li>
-                <img
-                  src={`https://cdn.magicui.design/companies/Microsoft.svg`}
-                  className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
-                />
-              </li>
-              <li>
-                <img
-                  src={`https://cdn.magicui.design/companies/GitHub.svg`}
-                  className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
-                />
-              </li>
 
-              <li>
-                <img
-                  src={`https://cdn.magicui.design/companies/Uber.svg`}
-                  className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
-                />
-              </li>
-              <li>
-                <img
-                  src={`https://cdn.magicui.design/companies/Notion.svg`}
-                  className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
-                />
-              </li>
-            </ul>
-          </div>
+          <p className="mt-6 text-xl leading-8 text-black/80 dark:text-white">
+            Our personal finance web app empowers you to <strong>track your income and expenses effortlessly</strong>. 
+            See exactly when your balance might go negative in a visually intuitive calendar format.
+          </p>
         </div>
       </div>
     </section>

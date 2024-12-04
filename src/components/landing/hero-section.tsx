@@ -26,12 +26,12 @@ export default function HeroSection() {
         </TextShimmer>
       </div>
       <h1 className="bg-gradient-to-br dark:from-white from-black from-30% dark:to-white/40 to-black/40 bg-clip-text py-6 text-5xl font-medium leading-none tracking-tighter text-transparent text-balance sm:text-6xl md:text-7xl lg:text-8xl translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
-      MyTwoney simplifies your
-        <br className="hidden md:block" /> daily financial management.
+      Never Miss a Beat with 
+        <br className="hidden md:block" /> Your Finances
       </h1>
       <p className="mb-12 text-lg tracking-tight text-gray-400 md:text-xl text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
-      Take charge of your finances and watch your 
-        <br className="hidden md:block" /> savings grow effortlessly.
+      Stay Ahead of Overdrafts, Every Day.
+        {/* <br className="hidden md:block" /> savings grow effortlessly. */}
       </p>
       <Button onClick={()=> {router.push('/login');} } className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-white dark:text-black opacity-0 ease-in-out [--animation-delay:600ms]">
         <span>Get Started for free </span>
