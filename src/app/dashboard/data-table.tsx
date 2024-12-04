@@ -46,7 +46,8 @@ interface DataTableProps {
   type: string;
 }
 
-export default function DataTable(props: DataTableProps) {
+// export default function DataTable(props: DataTableProps) {
+const DataTable = React.memo(function DataTable(props: DataTableProps) {
 
   const [openTransactionForm, setOpenTransactionForm] = React.useState(false)
 
@@ -135,7 +136,6 @@ export default function DataTable(props: DataTableProps) {
           
           if(column.id === "type") {
             column.toggleVisibility(false)
-            console.log(column)
           }
         })}
     }
@@ -240,4 +240,6 @@ export default function DataTable(props: DataTableProps) {
       </div>}
     </div>
   )
-}
+});
+
+export default DataTable
