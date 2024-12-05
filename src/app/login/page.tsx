@@ -151,7 +151,7 @@ function Login() {
 
                         <p className="text-center mt-4 text-sm text-muted-foreground">
                             <Link
-                                href="/signup"
+                                href="/forgot-password"
                                 className="hover:text-brand"
                             >
                                  Forgot password?

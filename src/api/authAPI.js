@@ -74,4 +74,29 @@ export const authAPI = {
             throw error.response?.data || error.message;
         }
     },
+    forgot_password: async (username) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/${username}/forgot-password`, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
+    confirm_forgot_password: async (username, credentials) => {
+        console.log('credentials:', credentials);
+        try {
+            const response = await axios.post(`${BASE_URL}/${username}/confirm-forgot-password`, credentials, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
 };
