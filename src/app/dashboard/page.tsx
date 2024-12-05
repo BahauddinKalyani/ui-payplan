@@ -68,7 +68,9 @@ const Dashboard = () => {
                 <TabsTrigger value="tab2">Transactions</TabsTrigger>
               </TabsList>
               <TabsContent value="tab1" forceMount={true} hidden={"tab1" !== tab}>
-                <CustomCalendar data={calendarData} />
+                <CustomCalendar data={calendarData}
+                  transactions={transactions} 
+                  setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>}/>
               </TabsContent>
               <TabsContent value="tab2" forceMount={true} hidden={"tab2" !== tab}>
                 <DataTable 

@@ -157,7 +157,7 @@ export function TransactionForm(props: {
     (values as any)['user_id'] = localStorage.getItem('user_id');
     try {
       const transaction = await transactionAPI.create_transaction(values);
-      let newTransactions = [...props.transactions];
+      const newTransactions = [...props.transactions];
       newTransactions.push(transaction.data as Payment);
       props.setTransactions(newTransactions);
       toast({

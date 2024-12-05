@@ -15,7 +15,10 @@ export default function Tab1(props: Tab1Props) {
     return (
         <div className="flex h-screen">
             <div className="w-3/5 pt-4">
-                <CustomCalendar  data={props.calendarData}/>
+                <CustomCalendar  
+                data={props.calendarData}
+                transactions={props.transactions} 
+                setTransactions={props.setTransactions} />
             </div>
             <div className="w-2/5 pt-4 pl-4">
                 <DataTable 
