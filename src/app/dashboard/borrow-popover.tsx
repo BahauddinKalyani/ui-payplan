@@ -10,6 +10,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Calendar } from "@/components/ui/calendar";
@@ -107,7 +108,7 @@ export default function BorrowInfoPopover( props: {
       <PopoverTrigger asChild>
         <span className="text-muted-foreground underline cursor-pointer">+ borrow from future</span>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-60">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
@@ -115,6 +116,7 @@ export default function BorrowInfoPopover( props: {
               name="amount_borrowed"
               render={({ field }) => (
                 <FormItem className="space-y-0">
+                  <FormLabel>Amount Borrowed</FormLabel>
                   <FormControl>
                     <Input 
                       type="number" 
@@ -134,6 +136,7 @@ export default function BorrowInfoPopover( props: {
               name="amount_to_be_returned"
               render={({ field }) => (
                 <FormItem className="space-y-0">
+                  <FormLabel>Amount to Repay</FormLabel>
                   <FormControl>
                     <Input 
                       type="number" 
@@ -153,6 +156,7 @@ export default function BorrowInfoPopover( props: {
               name="date_of_return"
               render={({ field }) => (
                 <FormItem className="space-y-0">
+                  <FormLabel>Repayment Date</FormLabel>
                   <Popover open={openPopover === "date_of_return"} onOpenChange={() => handlePopoverToggle("date_of_return")}>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -164,7 +168,7 @@ export default function BorrowInfoPopover( props: {
                             !field.value && "text-muted-foreground"
                           )}
                         >
-                          <CalendarIcon className="mr-2 h-3 w-3" />
+                          <CalendarIcon className="mr-1 h-3 w-3" />
                           {field.value ? format(field.value, "PPP") : "Repayment Date"}
                         </Button>
                       </FormControl>
