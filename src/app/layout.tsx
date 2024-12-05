@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import Head from 'next/head'
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -27,6 +28,9 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        </Head>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
