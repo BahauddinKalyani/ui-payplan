@@ -60,7 +60,18 @@ function Signup() {
     const onSubmit = async (data: z.infer<typeof schema>) => {
         try {
             setLoading(true);
-            const response = await authAPI.signup(data);
+            const creds = {
+                username: data.username,
+                email: data.email,
+                password: data.password,
+                privacy_policy: 'false'
+            }
+            if (data.privacy_policy === true) {
+                creds['privacy_policy'] = 'false';
+            } else {
+                creds['privacy_policy'] = 'true';
+            }
+            const response = await authAPI.signup(creds);
             if (response.status === 200) {
                 localStorage.setItem('username', data.username);
                 toast({
