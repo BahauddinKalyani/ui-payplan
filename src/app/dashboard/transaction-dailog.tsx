@@ -59,7 +59,7 @@ export default function TransactionDialog(props: TransactionDialogProps) {
     }, []);
   if (isMobile) {
     return (
-      <Drawer open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm}>
+      <Drawer open={props.openTransactionForm} onOpenChange={props.setOpenTransactionForm} repositionInputs={false}>
       <DrawerContent onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}>
         <DrawerHeader>

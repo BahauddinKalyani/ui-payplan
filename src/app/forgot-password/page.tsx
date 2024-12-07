@@ -83,14 +83,14 @@ function ForgotPassword() {
                     <div className="w-full max-w-md space-y-8">
                         <div className="flex flex-col gap-2 text-center">
                             <h1 className="text-2xl font-semibold tracking-tight">Reset your password</h1>
-                            <p className="text-sm text-muted-foreground">Enter the username associated with your account to reset your password.</p>
+                            <p className="text-sm text-muted-foreground">Enter the username or email associated with your account to reset your password.</p>
                         </div>
                         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <div>
                                 <Input 
                                     type="text" 
                                     id="username" 
-                                    placeholder="Enter your username" 
+                                    placeholder="Enter your username or email" 
                                     {...register('username')}
                                     className={errors.username ? 'border-red-500' : ''}
                                 />

@@ -5,6 +5,16 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import Head from 'next/head'
+import type { Viewport } from 'next'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: 'black',
+}
+
 
 const fontSans = FontSans({
   subsets: ["latin"],

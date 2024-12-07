@@ -44,7 +44,7 @@ export const TransactionInfoDialog = (props: TransactionInfoDialogProps) => {
 
   if(isMobile) {
     return (
-      <Drawer open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
+      <Drawer open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen} repositionInputs={false}>
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>{formatDate(date)}</DrawerTitle>
