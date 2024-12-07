@@ -61,6 +61,7 @@ function ConfirmFP() {
                     title: "Success",
                     description: "You have successfully reset your password.",
                     variant: "success",
+                    duration: 700,
                 });
                 router.push('/login');
             }

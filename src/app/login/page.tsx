@@ -64,6 +64,7 @@ function Login() {
                     title: "Success",
                     description: "You have successfully logged in.",
                     variant: "success",
+                    duration: 700,
                 });
                 router.push('/dashboard');
             }

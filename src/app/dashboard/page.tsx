@@ -12,7 +12,7 @@ import { Payment } from '@/app/dashboard/columns';
 import { useIsMobile } from '@/hooks/is-mobile';
 import  DataTable  from "@/app/dashboard/data-table"
 import CustomCalendar from "@/app/dashboard/custom-calendar"
-import OnboardingDialog from "@/app/dashboard/onboarding-welcome-dailog"
+import OnboardingDialog from "@/app/dashboard/onboarding-welcome-dailog";
 
 const Dashboard = () => {
   const { transactions, setTransactions, calendarData } = useTransactionsWithCalendar([]);
@@ -53,10 +53,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="max-h-screen bg-background">
       <CustomNavigation isMobile={isMobile} />
       <OnboardingDialog isMobile={isMobile} open={firstLogin} setOpen={setFirstLogin} transactions={transactions} setTransactions={setTransactions as React.Dispatch<React.SetStateAction<Payment[]>>} />
-      <main className={isMobile? "p-2" :"p-8"}>
+      <main className={isMobile? "pb-0 p-2 max-h-screen" :"p-8 pb-0 max-h-screen"}>
         <h1 className="text-3xl font-bold mb-4">Hey {toTitleCase(localStorage.getItem('username'))}! 💸</h1>
           {isMobile ? 
             <Tabs defaultValue="tab1"

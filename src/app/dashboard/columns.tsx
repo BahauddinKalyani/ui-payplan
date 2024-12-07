@@ -24,6 +24,7 @@ export type Payment = {
     date_of_second_transaction: string
     day: string
     skip_end_date: boolean
+    last_day_of_month: boolean
   }
 
 export const columns: ColumnDef<Payment>[] = [

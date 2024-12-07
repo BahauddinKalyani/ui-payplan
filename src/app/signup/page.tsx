@@ -78,6 +78,7 @@ function Signup() {
                     title: "Success",
                     description: "You have successfully signed up.",
                     variant: "success",
+                    duration: 700,
                 });
                 router.push('/email-confirmation');
             }

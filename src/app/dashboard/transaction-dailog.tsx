@@ -65,7 +65,7 @@ export default function TransactionDialog(props: TransactionDialogProps) {
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
         </DrawerHeader>
-        <ScrollArea className="h-[70vh] p-4">
+        <ScrollArea className="h-[70vh] p-4 py-0">
         <TransactionForm TransactionType={props.TransactionType} setOpenTransactionForm={props.setOpenTransactionForm} initialValues={props.initialValues ?? null} transactions={props.transactions} setTransactions={props.setTransactions} isMobile={isMobile} />
         </ScrollArea>
       </DrawerContent>

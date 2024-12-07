@@ -184,7 +184,7 @@ const CustomCalendar = (props: {
           </MenubarMenu>
         ))}
       </Menubar>
-      <ScrollArea className="h-[calc(100vh-60px)] w-full" ref={scrollAreaRef}>
+      <ScrollArea className="h-[calc(77vh-60px)] w-full" ref={scrollAreaRef}>
         {Object.entries(monthData).map(([monthYear, dates]) => (
           <div key={monthYear} className="mb-6">
             <h2 className="text-2xl font-bold mt-4 mb-4">{new Date(parseDate(dates[0].date)).toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>

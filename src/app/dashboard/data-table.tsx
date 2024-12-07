@@ -86,6 +86,7 @@ const DataTable = React.memo(function DataTable(props: DataTableProps) {
         title: "Success",
         description: "Transaction deleted successfully.",
         variant: "success",
+        duration: 700,
       })
     } catch (error) { 
       toast({
@@ -115,7 +116,7 @@ const DataTable = React.memo(function DataTable(props: DataTableProps) {
     },
     initialState: {
       pagination: {
-        pageSize: 8,
+        pageSize: 5,
       },
     },
     handleEditTransaction,

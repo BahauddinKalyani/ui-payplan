@@ -13,7 +13,7 @@ interface Tab1Props {
 
 export default function Tab1(props: Tab1Props) {
     return (
-        <div className="flex h-screen">
+        <div className="flex max-h-screen">
             <div className="w-3/5 pt-4">
                 <CustomCalendar  
                 data={props.calendarData}

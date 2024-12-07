@@ -30,6 +30,7 @@ function EmailConfirmation() {
                     title: "Success",
                     description: "You have successfully confirmed your email.",
                     variant: "success",
+                    duration: 700,
                 })
                 router.push('/login');
             }
