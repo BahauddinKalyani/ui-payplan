@@ -41,6 +41,7 @@ function EmailConfirmation() {
                 title: "Error",
                 description: "Signup failed. Please check your confirmation code.",
                 variant: "destructive",
+                duration: 1000,
             })
             setLoading(false);
         }

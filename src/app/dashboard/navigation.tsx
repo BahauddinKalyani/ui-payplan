@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -58,7 +58,7 @@ export default function CustomNavigation(props: { isMobile: boolean }) {
     <div className={`sticky ${props.isMobile? 'pl-2 pr-6': 'px-8'} top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60`}>
       <div className="flex h-14 items-center">
         <div className="cursor-pointer">
-          <Link href="/" legacyBehavior passHref>
+          <Link href="/dashboard" legacyBehavior passHref>
           <h3>MyTwoney</h3>
           </Link>
         </div>
@@ -93,11 +93,16 @@ export default function CustomNavigation(props: { isMobile: boolean }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar>
+                <AvatarImage src={localStorage.getItem('avatar')? '/avatars/'+localStorage.getItem('avatar'):undefined} alt="User avatar" className="rounded-full" />
                 <AvatarFallback>{localStorage.getItem('username')?.charAt(0).toUpperCase() || 'NA'}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem><UserIcon className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
+                <Link href="/profile">
+              <DropdownMenuItem>
+                <UserIcon className="mr-2 h-4 w-4" />Profile
+              </DropdownMenuItem>
+                </Link>
               <DropdownMenuItem onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
                   <SunIcon className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                   <MoonIcon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" /> Theme

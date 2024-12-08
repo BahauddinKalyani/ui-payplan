@@ -48,6 +48,7 @@ function ForgotPassword() {
                     title: "Success",
                     description: "A password reset code has been sent to your email. Please check your inbox!",
                     variant: "success",
+                    duration: 1000,
                 });
                 router.push('/confirm-forgot-password');
             }
@@ -57,6 +58,7 @@ function ForgotPassword() {
                 title: "Error",
                 description: error.detail,
                 variant: "destructive",
+                duration: 1000,
             });
         } finally {
             setLoading(false);

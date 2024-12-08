@@ -60,6 +60,7 @@ function Login() {
                 localStorage.setItem('email', responseData.email);
                 localStorage.setItem('age', responseData.age);
                 localStorage.setItem('onboardingCompleted', responseData.onboardingCompleted);
+                localStorage.setItem('avatar', responseData.avatar);
                 toast({
                     title: "Success",
                     description: "You have successfully logged in.",
@@ -74,6 +75,7 @@ function Login() {
                 title: "Error",
                 description: "Login failed. Please check your credentials.",
                 variant: "destructive",
+                duration: 1000,
             });
         } finally {
             setLoading(false);

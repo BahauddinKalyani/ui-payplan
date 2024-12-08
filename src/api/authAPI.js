@@ -99,4 +99,16 @@ export const authAPI = {
             throw error.response?.data || error.message;
         }
     },
+    change_password: async (username, credentials) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/${username}/change-password`, credentials, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
 };

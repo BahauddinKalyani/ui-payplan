@@ -88,6 +88,7 @@ function Signup() {
                 title: "Error",
                 description: "Signup failed. " + (error as { detail: string }).detail,
                 variant: "destructive",
+                duration: 1000,
             });
             setLoading(false);
         }
@@ -167,7 +168,7 @@ function Signup() {
                             <div className="flex items-center space-x-2">
                                 <Checkbox id="privacy_policy" defaultChecked={false} {...register('privacy_policy')} onCheckedChange={(value: boolean) => setValue('privacy_policy', value)} />
                                 <label htmlFor="privacy_policy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    I agree to the <Link href="/privacy-policy" className="text-blue-500">Terms and Conditions</Link>
+                                    I agree to the <Link href="/privacy-policy" className="text-blue-500">Privacy Policy</Link>
                                 </label>
                             </div>
                             {errors.privacy_policy && <p className="text-red-500 text-sm mt-1">{errors.privacy_policy.message}</p>}

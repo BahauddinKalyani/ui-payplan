@@ -185,8 +185,9 @@ export function TransactionForm(props: {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Transaction creation failed. "+error,
+        description: "Transaction creation failed. "+(error as { detail: string }).detail,
         variant: "destructive",
+        duration: 1000,
       })
     }
   }
@@ -221,8 +222,9 @@ export function TransactionForm(props: {
       console.log(error);
       toast({
         title: "Error",
-        description: "Transaction update failed. "+error,
+        description: "Transaction update failed. "+(error as { detail: string }).detail,
         variant: "destructive",
+        duration: 1000,
       })
     }
   }

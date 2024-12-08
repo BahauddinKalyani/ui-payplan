@@ -91,8 +91,9 @@ const DataTable = React.memo(function DataTable(props: DataTableProps) {
     } catch (error) { 
       toast({
         title: "Error",
-        description: "Transaction deletion failed. "+error,
+        description: "Transaction deletion failed. "+(error as { detail: string }).detail,
         variant: "destructive",
+        duration: 1000,
       })
     }
   }
