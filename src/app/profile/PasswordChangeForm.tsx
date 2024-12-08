@@ -140,7 +140,7 @@ export function PasswordChangeForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Change Password</Button>
+        <Button type="submit" className="float-right">Change Password</Button>
       </form>
     </Form>
   );

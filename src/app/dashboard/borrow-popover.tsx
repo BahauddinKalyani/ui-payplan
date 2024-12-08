@@ -122,8 +122,14 @@ export default function BorrowInfoPopover( props: {
                       type="number" 
                       placeholder="Amount Borrowed" 
                       className="text-sm py-1" 
+                      min={0}
                       {...field} 
                       onChange={e => field.onChange(e.target.value ? parseFloat(e.target.value) : 0)}
+                      onFocus={(e) => {
+                        let value = e.target.value;
+                        value = value.toString().replace(/^0+/, '');
+                        form.setValue('amount_borrowed', parseInt(value));
+                      }}
                     />
                   </FormControl>
                   <FormMessage className="text-xs" />
@@ -142,8 +148,14 @@ export default function BorrowInfoPopover( props: {
                       type="number" 
                       placeholder="Amount to Repay" 
                       className="text-sm py-1" 
+                      min={0}
                       {...field} 
                       onChange={e => field.onChange(e.target.value ? parseFloat(e.target.value) : 0)}
+                      onFocus={(e) => {
+                        let value = e.target.value;
+                        value = value.toString().replace(/^0+/, '');
+                        form.setValue('amount_to_be_returned', parseInt(value));
+                      }}
                     />
                   </FormControl>
                   <FormMessage className="text-xs" />

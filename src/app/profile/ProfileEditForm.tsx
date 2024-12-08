@@ -21,7 +21,7 @@ const profileSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().optional(),
   // email: z.string().email("Invalid email address"),
-  age: z.number(),
+  age: z.number().min(0, "Age must be a positive number"),
   avatar: z.string(),
 });
 
@@ -141,10 +141,17 @@ export function ProfileEditForm({ avatars, userInfo, setUserInfo }: ProfileEditF
             <FormItem>
               <FormLabel>Age</FormLabel>
               <FormControl>
-                <Input type="number" {...field} onChange={e => {
-                                        const value = e.target.value;
-                                        field.onChange(value ? parseInt(value) : 0);
-                                    }} />
+                <Input type="number" min={0} {...field} onChange={e => {
+                                        let value = e.target.value;
+                                        value = value.toString().replace(/^0+/, '');
+                                        field.onChange(value ? parseFloat(value) : 0);
+                                    }}
+                                    onFocus={(e) => {
+                                      let value = e.target.value;
+                                      value = value.toString().replace(/^0+/, '');
+                                      form.setValue('age', parseInt(value));
+                                    }}
+                      />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -198,7 +205,7 @@ export function ProfileEditForm({ avatars, userInfo, setUserInfo }: ProfileEditF
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Update Profile</Button>
+        <Button type="submit" className="float-right">Update Profile</Button>
       </form>
     </Form>
   );

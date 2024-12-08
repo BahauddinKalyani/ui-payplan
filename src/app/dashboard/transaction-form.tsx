@@ -291,9 +291,14 @@ export function TransactionForm(props: {
                 <FormItem>
                   <FormLabel>Transaction Amount</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Amount" {...field} onChange={e => {
+                    <Input type="number" min={0} placeholder="Amount" {...field} onChange={e => {
                                         const value = e.target.value;
                                         field.onChange(value ? parseFloat(value) : 0);
+                                    }}
+                                    onFocus={(e) => {
+                                      let value = e.target.value;
+                                      value = value.toString().replace(/^0+/, '');
+                                      form.setValue('amount', parseInt(value));
                                     }} />
                   </FormControl>
                   <FormMessage />
