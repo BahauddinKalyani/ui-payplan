@@ -9,9 +9,9 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    title: "Advanced AI Algorithms",
+    title: "Predict Cash Flow Issues",
     description:
-      "Our platform utilizes cutting-edge AI algorithms to provide accurate and efficient solutions for your business needs.",
+      "MyTwoney identifies financial shortfalls in advance by flagging problematic days with red dots or lines in a calendar view. This visual alert system allows users to address potential issues before they become crises.",
     className: "hover:bg-red-500/10 transition-all duration-500 ease-out",
     content: (
       <>
@@ -24,9 +24,9 @@ const features = [
     ),
   },
   {
-    title: "Secure Data Handling",
+    title: "Color-Coded Calendar Insights",
     description:
-      "We prioritize your data security with state-of-the-art encryption and strict privacy protocols, ensuring your information remains confidential.",
+      "Simplifies tracking by using blue for income, green for coverable expenses, and red for non-coverable expenses. Users can click on any date to see a detailed breakdown, making financial planning more intuitive and actionable.",
     className:
       "order-3 xl:order-none hover:bg-blue-500/10 transition-all duration-500 ease-out",
     content: (
@@ -38,11 +38,11 @@ const features = [
     ),
   },
   {
-    title: "Seamless Integration",
+    title: "Effortless Recurring Transaction Management",
     description:
-      "Easily integrate our AI solutions into your existing workflows and systems for a smooth and efficient operation.",
+      "Tracks recurring transactions like rent, bills, and paychecks in weekly, bi-weekly, or monthly formats. Users only need to input these once, saving time and reducing manual entry errors.",
     className:
-      "md:row-span-2 hover:bg-orange-500/10 transition-all duration-500 ease-out",
+      "md:row-span-2 hover:bg-green-500/10 transition-all duration-500 ease-out",
     content: (
       <>
         <FlickeringGrid
@@ -64,9 +64,9 @@ const features = [
     ),
   },
   {
-    title: "Customizable Solutions",
+    title: "Empowers Financial Decision-Making",
     description:
-      "Tailor our AI services to your specific needs with flexible customization options, allowing you to get the most out of our platform.",
+      "By providing clear insights into their cash flow, MyTwoney helps users make smarter financial decisions, such as prioritizing bills, avoiding overdraft fees, and building better savings habits.",
     className:
       "flex-row order-4 md:col-span-2 md:flex-row xl:order-none hover:bg-green-500/10 transition-all duration-500 ease-out",
     content: (
@@ -85,7 +85,7 @@ const features = [
 export default function Solution() {
   return (
     <Section
-      title="Solution"
+      // title="Solution"
       subtitle="Empower Your Business with AI Workflows"
       description="Generic AI tools won't suffice. Our platform is purpose-built to provide exceptional AI-driven solutions for your unique business needs."
       className="bg-neutral-100 dark:bg-neutral-900"
@@ -110,7 +110,7 @@ export default function Solution() {
             viewport={{ once: true }}
           >
             <div>
-              <h3 className="font-semibold mb-2 text-primary">
+              <h3 className="font-semibold mb-2 text-primary text-xl" style={{ color: "#37ecba" }}>
                 {feature.title}
               </h3>
               <p className="text-foreground">{feature.description}</p>

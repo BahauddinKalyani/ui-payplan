@@ -219,6 +219,7 @@ export default function Features({
                               currentIndex === index
                                 ? `${collapseDelay}ms`
                                 : "0s",
+                                backgroundColor: "#37ecba", 
                           }}
                         ></div>
                       </div>

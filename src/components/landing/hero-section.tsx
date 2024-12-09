@@ -33,7 +33,7 @@ export default function HeroSection() {
       Stay Ahead of Overdrafts, Every Day.
         {/* <br className="hidden md:block" /> savings grow effortlessly. */}
       </p>
-      <Button onClick={()=> {router.push('/login');} } className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-white dark:text-black opacity-0 ease-in-out [--animation-delay:600ms]">
+      <Button onClick={()=> {router.push('/login');} } className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-white dark:text-black opacity-0 ease-in-out [--animation-delay:600ms] hover:bg-[#37ecba] hover:text-white transition-colors duration-200 ease-in">
         <span>Get Started for free </span>
         <ArrowRightIcon className="ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
       </Button>

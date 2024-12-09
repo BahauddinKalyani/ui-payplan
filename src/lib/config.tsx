@@ -11,7 +11,7 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   keywords: ["SaaS", "Template", "Next.js", "React", "Tailwind CSS"],
   links: {
-    email: "support@acme.ai",
+    email: "support@mytwoney.com",
     twitter: "https://twitter.com/magicuidesign",
     discord: "https://discord.gg/87p2vpsat5",
     github: "https://github.com/magicuidesign/magicui",
@@ -144,54 +144,65 @@ export const siteConfig = {
   ],
   faqs: [
     {
-      question: "What is acme.ai?",
+      question: " What is MyTwoney, and how does it work?",
       answer: (
         <span>
-          acme.ai is a platform that helps you build and manage your AI-powered
-          applications. It provides tools and services to streamline the
-          development and deployment of AI solutions.
+          MyTwoney is a personal finance web app that helps you track your cash 
+          flow and identify potential shortfalls. Using a color-coded calendar, 
+          it shows income in <strong>blue</strong>, manageable expenses in <strong>green</strong>, and uncovered 
+          expenses in <strong>red</strong>, helping you plan ahead and avoid financial stress. 
+          Simply input your transactions, set up recurring payments, 
+          and get actionable insights.
         </span>
       ),
     },
     {
-      question: "How can I get started with acme.ai?",
+      question: "How much does MyTwoney cost?",
       answer: (
         <span>
-          You can get started with acme.ai by signing up for an account on our
-          website, creating a new project, and following our quick-start guide.
-          We also offer tutorials and documentation to help you along the way.
+          MyTwoney is currently <strong>free for all users.</strong> You can enjoy full access to all features,
+           including transaction tracking and calendar views. A Pro version with advanced 
+           features may be launched in the future at an affordable price.
         </span>
       ),
     },
     {
-      question: "What types of AI models does acme.ai support?",
+      question: "Can MyTwoney connect to my bank account?",
       answer: (
         <span>
-          acme.ai supports a wide range of AI models, including but not limited
-          to natural language processing, computer vision, and predictive
-          analytics. We continuously update our platform to support the latest
-          AI technologies.
+          Currently, MyTwoney does not integrate directly with bank accounts. 
+          However, you can manually input your transactions or set up recurring entries 
+          like rent, paychecks, and bills for seamless tracking.
         </span>
       ),
     },
     {
-      question: "Is acme.ai suitable for beginners in AI development?",
+      question: "Is my data secure on MyTwoney?",
       answer: (
         <span>
-          Yes, acme.ai is designed to be user-friendly for both beginners and
-          experienced developers. We offer intuitive interfaces, pre-built
-          templates, and extensive learning resources to help users of all skill
-          levels create AI-powered applications.
+          Absolutely. MyTwoney follows robust data security standards, 
+          including encrypted storage and secure login via Google. 
+          Your financial information remains private and protected.
         </span>
       ),
     },
     {
-      question: "What kind of support does acme.ai provide?",
+      question: "Can MyTwoney help me save money?",
       answer: (
         <span>
-          acme.ai provides comprehensive support including documentation, video
-          tutorials, a community forum, and dedicated customer support. We also
-          offer premium support plans for enterprises with more complex needs.
+          Yes! By identifying days when your cash flow might go negative, 
+          MyTwoney helps you plan ahead to avoid overdraft fees or missed payments. 
+          It empowers you to make better decisions, such as managing spending or 
+          ensuring you have enough funds for upcoming bills.
+        </span>
+      ),
+    },
+    {
+      question: "Can I use MyTwoney on my mobile device?",
+      answer: (
+        <span>
+          Yes, MyTwoney is a fully responsive web app, meaning you 
+          can use it seamlessly on your phone, tablet, or computer without downloading anything.
         </span>
       ),
     },
