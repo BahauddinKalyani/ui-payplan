@@ -119,7 +119,7 @@ export default async function Blog({
           <Author
             twitterUsername={post.metadata.author}
             name={post.metadata.author}
-            image={post.metadata.author_image}
+            image={post.metadata.author_image || ""}
           />
         </div>
         <article

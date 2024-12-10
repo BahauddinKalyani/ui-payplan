@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoonIcon, SunIcon, UserIcon, LogOutIcon } from "lucide-react";
+import { UserIcon, LogOutIcon } from "lucide-react";
 // import {
 //   NavigationMenu,
 //   NavigationMenuItem,
