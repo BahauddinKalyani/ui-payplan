@@ -52,12 +52,6 @@ const formSchema = z.object({
 }, {
   message: "Start date cannot be later than end date.",
   path: ["start_date"], // This will show the error under start_date field
-}).refine(data => {
-  // Ensure date_of_transaction is not later than date_of_second_transaction
-  return data.last_day_of_month || (data.date_of_transaction && data.date_of_transaction <= (data.date_of_second_transaction ?? data.date_of_transaction));
-}, {
-  message: "First transaction date cannot be later than second transaction date.",
-  path: ["date_of_second_transaction"], // This will show the error under date_of_transaction field
 });
 
 
@@ -162,8 +156,8 @@ export function TransactionForm(props: {
   const createTransaction = async (values: any) => {
     const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
     for (const key in values) {
-      if (date_keys.includes(key)) {
-        (values as any)[key] = formatDate((values as any)[key]);
+      if (date_keys.includes(key) && values[key] !== null) {
+          (values as any)[key] = formatDate((values as any)[key]);
       } else if (key === 'day') {
         (values as any)[key] = parseInt((values as any)[key]);
       } else if (key === 'amount') {  

@@ -51,12 +51,13 @@ export default function Author({
   }
 
   return (
-    <Link
-      href={`https://twitter.com/${twitterUsername}`}
-      className="group flex items-center space-x-3"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    // <Link
+    //   href={`https://twitter.com/${twitterUsername}`}
+    //   className="group flex items-center space-x-3"
+    //   target="_blank"
+    //   rel="noopener noreferrer"
+    // >
+    <>
       <Image
         src={image}
         alt={name}
@@ -66,8 +67,9 @@ export default function Author({
       />
       <div className="flex flex-col">
         <p className="font-semibold text-gray-700">{name}</p>
-        <p className="text-sm text-gray-500">@{twitterUsername}</p>
+        <p className="text-sm text-gray-500">@{twitterUsername.toLowerCase()}</p>
       </div>
-    </Link>
+    </>
+    // </Link>
   );
 }

@@ -12,7 +12,7 @@ export default function CallToActionSection() {
       <div className="container px-4 py-12 md:px-6 md:py-24 lg:py-32">
         <div className="mx-auto space-y-4 py-6 text-center">
           <h4 className="mx-auto mb-2 max-w-4xl text-balance text-[42px] font-medium tracking-tighter">
-            Unlock Your Financial Potential with MyTwoney
+            Unlock Your Financial Potential with mytwoney
           </h4>
         </div>
         <div className="space-y-4 text-center">
@@ -22,7 +22,7 @@ export default function CallToActionSection() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row">
             {BUTTONS.map((button, index) => (
-              <Button key={index} variant={button.variant} asChild>
+              <Button key={index} variant={button.variant} asChild className={index===0? "hover:bg-[#37ecba] hover:text-white transition-colors duration-200 ease-in":""}>
                 <Link href={button.href} prefetch={false}>
                   {button.text}
                 </Link>

@@ -11,13 +11,13 @@ const features = [
   {
     title: "Predict Cash Flow Issues",
     description:
-      "MyTwoney identifies financial shortfalls in advance by flagging problematic days with red dots or lines in a calendar view. This visual alert system allows users to address potential issues before they become crises.",
+      "mytwoney identifies financial shortfalls in advance by flagging problematic days with red dots or lines in a calendar view. This visual alert system allows users to address potential issues before they become crises.",
     className: "hover:bg-red-500/10 transition-all duration-500 ease-out",
     content: (
       <>
         <Safari
-          src={`/dashboard-dark.png`}
-          url="https://acme.ai"
+          src={`/cashflow-issues.png`}
+          url="https://mytwoney.com"
           className="-mb-32 mt-4 max-h-64 w-full px-4 select-none drop-shadow-[0_0_28px_rgba(0,0,0,.1)] group-hover:translate-y-[-10px] transition-all duration-300"
         />
       </>
@@ -31,8 +31,8 @@ const features = [
       "order-3 xl:order-none hover:bg-blue-500/10 transition-all duration-500 ease-out",
     content: (
       <Safari
-        src={`/dashboard-dark.png`}
-        url="https://acme.ai"
+        src={`/calendar.png`}
+        url="https://mytwoney.com"
         className="-mb-32 mt-4 max-h-64 w-full px-4 select-none drop-shadow-[0_0_28px_rgba(0,0,0,.1)] group-hover:translate-y-[-10px] transition-all duration-300"
       />
     ),
@@ -56,7 +56,7 @@ const features = [
           width={800}
         />
         <Safari
-          src={`/dashboard-dark.png`}
+          src={`/recurring-transactions.png`}
           url="https://acme.ai"
           className="-mb-48 ml-12 mt-16 h-full px-4 select-none drop-shadow-[0_0_28px_rgba(0,0,0,.1)] group-hover:translate-x-[-10px] transition-all duration-300"
         />
@@ -66,7 +66,7 @@ const features = [
   {
     title: "Empowers Financial Decision-Making",
     description:
-      "By providing clear insights into their cash flow, MyTwoney helps users make smarter financial decisions, such as prioritizing bills, avoiding overdraft fees, and building better savings habits.",
+      "By providing clear insights into their cash flow, mytwoney helps users make smarter financial decisions, such as prioritizing bills, avoiding overdraft fees, and building better savings habits.",
     className:
       "flex-row order-4 md:col-span-2 md:flex-row xl:order-none hover:bg-green-500/10 transition-all duration-500 ease-out",
     content: (

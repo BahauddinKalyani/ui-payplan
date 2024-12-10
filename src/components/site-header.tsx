@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AlignJustify, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const menuItem = [
   {
@@ -99,9 +100,23 @@ export function SiteHeader() {
     <>
       <header className="fixed left-0 top-0 z-50 w-full translate-y-[-1rem] animate-fade-in border-b opacity-0 backdrop-blur-[12px] [--animation-delay:600ms]">
         <div className="container flex h-[3.5rem] items-center justify-between">
+          
+          {/* <div className="flex items-center gap-x-2">
           <Link className="text-md flex items-center" href="/">
-            MyTwoney
+            <Image src="/mytwoney-light.png" height={46} width={176} alt="Logo" />
           </Link>
+          </div> */}
+          <div className="flex items-center gap-x-2">
+            <Link className="text-md flex items-center" href="/">
+              <img
+                src="/mytwoney-light.png"
+                // height={46}
+                // width={150}
+                alt="Logo"
+                className="w-[120px] lg:w-[150px]"
+              />
+            </Link>
+          </div>
 
           <div className="ml-auto flex h-full items-center">
             <Link className="mr-6 text-sm" href="/login">
@@ -110,7 +125,7 @@ export function SiteHeader() {
             <Link
               className={cn(
                 buttonVariants({ variant: "secondary" }),
-                "mr-6 text-sm"
+                "text-sm"
               )}
               href="/signup"
             >

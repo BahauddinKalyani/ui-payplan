@@ -80,7 +80,7 @@ export default async function Blog({
           }),
         }}
       />
-      <div className="mx-auto w-full max-w-[800px] px-4 sm:px-6 lg:px-8 space-y-4 mt-24 mb-12">
+      <div className="mx-auto w-full max-w-[800px] px-4 sm:px-6 lg:px-8 space-y-4 mt-24">
         <Suspense
           fallback={
             <div className="mb-8 w-full h-64 bg-gray-200 animate-pulse rounded-lg"></div>
@@ -119,7 +119,7 @@ export default async function Blog({
           <Author
             twitterUsername={post.metadata.author}
             name={post.metadata.author}
-            image={"/author.jpg"}
+            image={post.metadata.author_image}
           />
         </div>
         <article

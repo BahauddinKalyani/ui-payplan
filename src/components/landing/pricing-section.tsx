@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { color } from "framer-motion";
+// import { color } from "framer-motion";
 
 const pricingOptions = [
   {
@@ -120,12 +120,23 @@ export default function PricingSection() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Link href="/login">
-                <Button className="w-full hover:bg-[#37ecba] hover:text-white transition-colors duration-200 ease-in" disabled={index === 1 ? true : false}>
+                {index === 0 && (
+                <Link href="/login" className="w-full">
+                <Button className="w-full hover:bg-[#37ecba] hover:text-white transition-colors duration-200 ease-in">
                   Choose Plan
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 </Link>
+                )}
+
+                {index === 1 && (
+                <Link target="_blank" href="https://forms.gle/xbFmwV3CMCoAAc7Y8" className="w-full">
+                <Button className="w-full hover:bg-[#37ecba] hover:text-white transition-colors duration-200 ease-in">
+                  Join Waitlist
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                </Link>
+                )}
               </CardFooter>
             </Card>
           ))}

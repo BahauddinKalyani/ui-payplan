@@ -144,10 +144,10 @@ export const siteConfig = {
   ],
   faqs: [
     {
-      question: " What is MyTwoney, and how does it work?",
+      question: " What is mytwoney, and how does it work?",
       answer: (
         <span>
-          MyTwoney is a personal finance web app that helps you track your cash 
+          mytwoney is a personal finance web app that helps you track your cash 
           flow and identify potential shortfalls. Using a color-coded calendar, 
           it shows income in <strong>blue</strong>, manageable expenses in <strong>green</strong>, and uncovered 
           expenses in <strong>red</strong>, helping you plan ahead and avoid financial stress. 
@@ -157,51 +157,51 @@ export const siteConfig = {
       ),
     },
     {
-      question: "How much does MyTwoney cost?",
+      question: "How much does mytwoney cost?",
       answer: (
         <span>
-          MyTwoney is currently <strong>free for all users.</strong> You can enjoy full access to all features,
+          mytwoney is currently <strong>free for all users.</strong> You can enjoy full access to all features,
            including transaction tracking and calendar views. A Pro version with advanced 
            features may be launched in the future at an affordable price.
         </span>
       ),
     },
     {
-      question: "Can MyTwoney connect to my bank account?",
+      question: "Can mytwoney connect to my bank account?",
       answer: (
         <span>
-          Currently, MyTwoney does not integrate directly with bank accounts. 
+          Currently, mytwoney does not integrate directly with bank accounts. 
           However, you can manually input your transactions or set up recurring entries 
           like rent, paychecks, and bills for seamless tracking.
         </span>
       ),
     },
     {
-      question: "Is my data secure on MyTwoney?",
+      question: "Is my data secure on mytwoney?",
       answer: (
         <span>
-          Absolutely. MyTwoney follows robust data security standards, 
+          Absolutely. mytwoney follows robust data security standards, 
           including encrypted storage and secure login via Google. 
           Your financial information remains private and protected.
         </span>
       ),
     },
     {
-      question: "Can MyTwoney help me save money?",
+      question: "Can mytwoney help me save money?",
       answer: (
         <span>
           Yes! By identifying days when your cash flow might go negative, 
-          MyTwoney helps you plan ahead to avoid overdraft fees or missed payments. 
+          mytwoney helps you plan ahead to avoid overdraft fees or missed payments. 
           It empowers you to make better decisions, such as managing spending or 
           ensuring you have enough funds for upcoming bills.
         </span>
       ),
     },
     {
-      question: "Can I use MyTwoney on my mobile device?",
+      question: "Can I use mytwoney on my mobile device?",
       answer: (
         <span>
-          Yes, MyTwoney is a fully responsive web app, meaning you 
+          Yes, mytwoney is a fully responsive web app, meaning you 
           can use it seamlessly on your phone, tablet, or computer without downloading anything.
         </span>
       ),

@@ -141,6 +141,7 @@ import {
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
 import Link from "next/link";
+import Image from "next/image";
 
 // type Link = {
 // text: string;
@@ -160,7 +161,7 @@ url: string;
 const icons: Icon[] = [
 { icon: <InstagramLogoIcon />, url: "https://www.instagram.com" },
 { icon: <LinkedInLogoIcon />, url: "https://www.linkedin.com" },
-{ icon: <TwitterLogoIcon />, url: "https://www.twitter.com" },
+// { icon: <TwitterLogoIcon />, url: "https://www.twitter.com" },
 ];
 
 export function SiteFooter() {
@@ -168,15 +169,13 @@ return (
   <footer className="px-5 lg:px-10 p-5 max-w-7xl mx-auto">
     <div className="flex flex-col gap-y-5 md:flex-row items-start md:items-center justify-between w-full gap-x-5">
       <div className="flex items-center gap-x-2">
-         <h2 className="font-bold text-neutral-900 dark:text-white">
-            MyTwoney
-          </h2>
+          <Image src="/mytwoney-light.png" height={46} width={88} alt="Logo" />
       </div>
 
       <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
         Copyright © {new Date().getFullYear()}{" "}
         <Link href="/" className="cursor-pointer">
-          MyTwoney
+          mytwoney
         </Link>
           . All Rights Reserved.
       </span>
