@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/drawer"
 import { useIsMobile } from '@/hooks/is-mobile';
 import { ScrollArea } from "@/components/ui/scroll-area"
+import BorrowInfoPopover from '@/app/dashboard/borrow-popover';
 
 interface TransactionInfoDialogProps {
   isDialogOpen: boolean;
@@ -21,6 +22,8 @@ interface TransactionInfoDialogProps {
     unpaid_transactions: Payment[]; 
     closing_balance: number; 
   }};
+  transactions: Payment[];
+  setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>;
 }
 
 export const TransactionInfoDialog = (props: TransactionInfoDialogProps) => {
@@ -41,13 +44,13 @@ export const TransactionInfoDialog = (props: TransactionInfoDialogProps) => {
 
   if(isMobile) {
     return (
-      <Drawer open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen}>
+      <Drawer open={props.isDialogOpen} onOpenChange={props.setIsDialogOpen} repositionInputs={false}>
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>{formatDate(date)}</DrawerTitle>
           </DrawerHeader>
           <ScrollArea className="h-[70vh] px-4">
-          <Timeline data={data}/>
+          <Timeline data={data} date={date} transactions={props.transactions} setTransactions={props.setTransactions} setIsDialogOpen={props.setIsDialogOpen}/>
           </ScrollArea>
         </DrawerContent>
       </Drawer>
@@ -61,20 +64,26 @@ export const TransactionInfoDialog = (props: TransactionInfoDialogProps) => {
           <DialogTitle>{formatDate(date)}</DialogTitle>
         </DialogHeader>
         <ScrollArea className="h-[70vh]">
-        <Timeline data={data}/>
+        <Timeline data={data} date={date} transactions={props.transactions} setTransactions={props.setTransactions} setIsDialogOpen={props.setIsDialogOpen}/>
         </ScrollArea>
       </DialogContent>
     </Dialog>
   );
 };
 
-function Timeline(props: { data: {
-  opening_balance: number;
-  income_transactions: Payment[];
-  paid_transactions: Payment[];
-  unpaid_transactions: Payment[];
-  closing_balance: number;
-}}
+function Timeline(props: { 
+  data: {
+    opening_balance: number;
+    income_transactions: Payment[];
+    paid_transactions: Payment[];
+    unpaid_transactions: Payment[];
+    closing_balance: number;
+  },
+  transactions: Payment[],
+  setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>,
+  setIsDialogOpen: (open: boolean) => void,
+  date: string,
+}
 ) {
   const data = props.data;
   return (
@@ -114,6 +123,9 @@ function Timeline(props: { data: {
           <div key="unpaid" className="grid gap-1 text-sm relative">
             <div className="aspect-square w-3 bg-red-500 rounded-full absolute left-0 translate-x-[-29.5px] z-10 top-1 dark:bg-red-500" />
             <div className="text-lg font-bold text-red-500">Unpaid:</div>
+            <div className="underline text-muted-foreground cursor-pointer">
+              <BorrowInfoPopover transactions={props.transactions} date={props.date} setTransactions={props.setTransactions} setIsDialogOpen={props.setIsDialogOpen}/>
+            </div> 
               {data.unpaid_transactions.map((transaction: Payment) => (
                   <div key={transaction.id} className="text-gray-500 dark:text-gray-400">
                     {transaction.name}: ${transaction.amount}

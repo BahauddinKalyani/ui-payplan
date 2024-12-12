@@ -42,9 +42,12 @@ interface DataTableProps {
   transactions: Payment[];
   setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>;
   isMobile: boolean;
+  isMain: boolean;
+  type: string;
 }
 
-export default function DataTable(props: DataTableProps) {
+// export default function DataTable(props: DataTableProps) {
+const DataTable = React.memo(function DataTable(props: DataTableProps) {
 
   const [openTransactionForm, setOpenTransactionForm] = React.useState(false)
 
@@ -83,12 +86,14 @@ export default function DataTable(props: DataTableProps) {
         title: "Success",
         description: "Transaction deleted successfully.",
         variant: "success",
+        duration: 700,
       })
     } catch (error) { 
       toast({
         title: "Error",
-        description: "Transaction deletion failed. "+error,
+        description: "Transaction deletion failed. "+(error as { detail: string }).detail,
         variant: "destructive",
+        duration: 1000,
       })
     }
   }
@@ -112,7 +117,7 @@ export default function DataTable(props: DataTableProps) {
     },
     initialState: {
       pagination: {
-        pageSize: 8,
+        pageSize: 5,
       },
     },
     handleEditTransaction,
@@ -125,7 +130,6 @@ export default function DataTable(props: DataTableProps) {
   }
 
   React.useEffect(() => {
-    console.log(props.isMobile)
     if(props.isMobile){
       {table
         .getAllColumns()
@@ -134,7 +138,6 @@ export default function DataTable(props: DataTableProps) {
           
           if(column.id === "type") {
             column.toggleVisibility(false)
-            console.log(column)
           }
         })}
     }
@@ -144,19 +147,19 @@ export default function DataTable(props: DataTableProps) {
     <div className="w-full">
       <DeleteAlertDialog showDeleteAlert={showDeleteAlert} setShowDeleteAlert={setShowDeleteAlert} delete_transaction={delete_transaction}/>
       <div className="flex items-center pb-4">
-        <Input
+        { props.isMain && <Input
           placeholder="Filter transactions..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm mr-2"
-        />
+        /> }
         <TooltipProvider delayDuration={300}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button className="ml-auto" variant="default" onClick={handleToggle}>
-              <Plus />
+              Add Transaction<Plus />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
@@ -164,7 +167,7 @@ export default function DataTable(props: DataTableProps) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <TransactionDialog openTransactionForm={openTransactionForm} setOpenTransactionForm={setOpenTransactionForm} transactions={props.transactions} setTransactions={props.setTransactions} initialValues={initialValues}/>
+      <TransactionDialog TransactionType={props.type} openTransactionForm={openTransactionForm} setOpenTransactionForm={setOpenTransactionForm} transactions={props.transactions} setTransactions={props.setTransactions} initialValues={initialValues}/>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -216,6 +219,7 @@ export default function DataTable(props: DataTableProps) {
           </TableBody>
         </Table>
       </div>
+      { props.isMain &&
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">
           <Button
@@ -235,7 +239,9 @@ export default function DataTable(props: DataTableProps) {
             Next
           </Button>
         </div>
-      </div>
+      </div>}
     </div>
   )
-}
+});
+
+export default DataTable

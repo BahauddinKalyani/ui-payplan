@@ -44,7 +44,8 @@ const formSchema = z.object({
   date_of_second_transaction: z.date().optional(),
   start_date: z.date(),
   end_date: z.date().optional(),
-  skip_end_date: z.boolean(),
+  skip_end_date: z.boolean().optional(),
+  last_day_of_month: z.boolean().optional(),
 }).refine(data => {
   // Ensure start_date is not later than end_date unless skipping end date
   return data.skip_end_date || (data.start_date <= (data.end_date ?? data.start_date));
@@ -52,6 +53,7 @@ const formSchema = z.object({
   message: "Start date cannot be later than end date.",
   path: ["start_date"], // This will show the error under start_date field
 });
+
 
 const daysOfWeek = [
   { value: 1, label: 'Monday' },
@@ -71,16 +73,24 @@ const frequencies = [
   { value: 'monthly', label: 'Monthly' },
 ];
 
-export function TransactionForm(props: { initialValues: Payment|null; setOpenTransactionForm: (arg0: boolean) => void; transactions: Payment[]; setTransactions: (arg0: Array<Payment>) => void; isMobile: boolean; }) {
+export function TransactionForm(props: {
+  initialValues: Payment|null; 
+  setOpenTransactionForm: (arg0: boolean) => void; 
+  transactions: Payment[]; 
+  setTransactions: (arg0: Array<Payment>) => void; 
+  isMobile: boolean; 
+  TransactionType: string; }) 
+{
   // const [selectedType, setSelectedType] = useState('income');
   const [selectedFrequency, setSelectedFrequency] = useState('one-time');
   const [transaction_id, setTransactionId] = useState('');
   const [loading, setLoading] = useState(false);
   const [skipEndDate, setSkipEndDate] = useState(false);
+  const [lastDayOfMonth, setLastDayOfMonth] = useState(false);
   const [openPopover, setOpenPopover] = useState('');
   const { toast } = useToast()
   const defaultValues = {
-    type: 'expense',
+    type: props.TransactionType === 'income' ? 'income' : 'expense',
     name: '',
     amount: 0,
     frequency: 'one-time',
@@ -90,6 +100,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
     date_of_second_transaction: new Date(),
     day: 1,
     skip_end_date: false,
+    last_day_of_month: false,
   };
   
   const form = useForm({
@@ -118,6 +129,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
       setSelectedFrequency(resetValues.frequency);
       setTransactionId(props.initialValues.id);
       setSkipEndDate(resetValues.skip_end_date);
+      setLastDayOfMonth(resetValues.last_day_of_month);
 
     }
   }, [props.initialValues]);
@@ -126,6 +138,11 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
     setLoading(true);
     if (skipEndDate) {
       delete values.end_date; // Remove end_date if skipping
+    }
+    if (lastDayOfMonth && values.frequency === 'monthly') {
+      delete values.date_of_transaction;
+    } else if (lastDayOfMonth && values.frequency === 'semi-monthly') {
+      delete values.date_of_second_transaction;
     }
     if (transaction_id) {
       updateTransaction(values);
@@ -139,8 +156,8 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
   const createTransaction = async (values: any) => {
     const date_keys = ['date_of_transaction', 'date_of_second_transaction', 'start_date', 'end_date'];
     for (const key in values) {
-      if (date_keys.includes(key)) {
-        (values as any)[key] = formatDate((values as any)[key]);
+      if (date_keys.includes(key) && values[key] !== null) {
+          (values as any)[key] = formatDate((values as any)[key]);
       } else if (key === 'day') {
         (values as any)[key] = parseInt((values as any)[key]);
       } else if (key === 'amount') {  
@@ -150,19 +167,21 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
     (values as any)['user_id'] = localStorage.getItem('user_id');
     try {
       const transaction = await transactionAPI.create_transaction(values);
-      let newTransactions = [...props.transactions];
+      const newTransactions = [...props.transactions];
       newTransactions.push(transaction.data as Payment);
       props.setTransactions(newTransactions);
       toast({
         title: "Success",
         description: "Transaction created successfully.",
         variant: "success",
+        duration: 700,
       })
     } catch (error) {
       toast({
         title: "Error",
-        description: "Transaction creation failed. "+error,
+        description: "Transaction creation failed. "+(error as { detail: string }).detail,
         variant: "destructive",
+        duration: 1000,
       })
     }
   }
@@ -188,15 +207,18 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
         title: "Success",
         description: "Transaction updated successfully.",
         variant: "success",
+        duration: 700,
       })
       setSelectedFrequency(values.frequency);
       setSkipEndDate(values.skip_end_date);
+      setLastDayOfMonth(values.last_day_of_month);
     } catch (error) { 
       console.log(error);
       toast({
         title: "Error",
-        description: "Transaction update failed. "+error,
+        description: "Transaction update failed. "+(error as { detail: string }).detail,
         variant: "destructive",
+        duration: 1000,
       })
     }
   }
@@ -208,7 +230,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className={`space-y-8 ${props.isMobile ? 'flex flex-col' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}`}>
+        <div className={`${props.isMobile ? 'flex flex-col space-y-6 px-2' : 'grid grid-cols-1 md:grid-cols-2 gap-6'}`}>
           <div className="space-y-6">
             <FormField
               control={form.control}
@@ -216,7 +238,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Transaction Type</FormLabel>
-                  <Select 
+                  <Select disabled={props.TransactionType !== ''}
                     onValueChange={(value) => {
                       if(value) {
                         field.onChange(value);
@@ -263,9 +285,14 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                 <FormItem>
                   <FormLabel>Transaction Amount</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Amount" {...field} onChange={e => {
+                    <Input type="number" min={0} placeholder="Amount" {...field} onChange={e => {
                                         const value = e.target.value;
                                         field.onChange(value ? parseFloat(value) : 0);
+                                    }}
+                                    onFocus={(e) => {
+                                      let value = e.target.value;
+                                      value = value.toString().replace(/^0+/, '');
+                                      form.setValue('amount', parseInt(value));
                                     }} />
                   </FormControl>
                   <FormMessage />
@@ -309,7 +336,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
             />
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 pt-1.5">
           {(selectedFrequency === 'weekly' || selectedFrequency === 'bi-weekly') && (
               <FormField
                 control={form.control}
@@ -344,7 +371,7 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
             )}
 
             
-          {(selectedFrequency === 'one-time' || selectedFrequency === 'semi-monthly' || selectedFrequency === 'monthly') &&
+          {(selectedFrequency === 'one-time' || selectedFrequency === 'semi-monthly') &&
           <FormField
               control={form.control}
               name="date_of_transaction"
@@ -385,7 +412,65 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
             />
           }
 
-        {(selectedFrequency === 'semi-monthly') &&
+          {(selectedFrequency === 'monthly' && !lastDayOfMonth) &&
+            <FormField
+            control={form.control}
+            name="date_of_transaction"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Date of Transaction</FormLabel>
+                <FormDescription>Select the date when the transaction will happen.</FormDescription>
+                <Popover open={openPopover === "date_of_transaction"} onOpenChange={() => handlePopoverToggle("date_of_transaction")}>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        type='button'
+                        variant={"outline"}
+                        className={cn(
+                          "justify-start text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="h-4 w-4 opacity-50" />
+                        {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 z-50">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={(date) => {
+                        field.onChange(date);
+                        handlePopoverToggle("date_of_transaction");
+                      }}
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          }
+
+          {selectedFrequency === 'monthly' &&
+            <FormField control={form.control} name="last_day_of_month" render={({ field }) => (
+              <FormItem className="flex items-center">
+                <Switch className='mt-1' checked={field.value}
+                onCheckedChange={(value) => {
+                    field.onChange(value);
+                    setLastDayOfMonth(value);
+                }
+              } />
+                <FormLabel className="ml-2">Last Day</FormLabel>
+                <FormDescription className="ml-2">Transaction will occur last day of month.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )} 
+            />
+          }
+
+        {(selectedFrequency === 'semi-monthly' && !lastDayOfMonth) &&
           <FormField
               control={form.control}
               name="date_of_second_transaction"
@@ -422,6 +507,23 @@ export function TransactionForm(props: { initialValues: Payment|null; setOpenTra
                   <FormMessage />
                 </FormItem>
               )}
+            />
+          }
+
+          {selectedFrequency === 'semi-monthly' &&
+            <FormField control={form.control} name="last_day_of_month" render={({ field }) => (
+              <FormItem className="flex items-center">
+                <Switch className='mt-1' checked={field.value}
+                onCheckedChange={(value) => {
+                    field.onChange(value);
+                    setLastDayOfMonth(value);
+                }
+              } />
+                <FormLabel className="ml-2">Last Day</FormLabel>
+                <FormDescription className="ml-2">Second transaction: last day of the month.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )} 
             />
           }
 

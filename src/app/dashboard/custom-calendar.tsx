@@ -12,10 +12,15 @@ interface CustomCalendarProps {
     income_transactions: Payment[]; 
     paid_transactions: Payment[]; 
     unpaid_transactions: Payment[]; 
-    closing_balance: number; 
+    closing_balance: number;
   }
 
-const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) => {
+const CustomCalendar = (props: { 
+      data: {[key: string]: CustomCalendarProps }, 
+      transactions: Payment[];
+      setTransactions: React.Dispatch<React.SetStateAction<Payment[]>>
+    }
+  ) => {
   const todayRef = useRef(null);
   const scrollAreaRef = useRef(null);
   const [selectedDateData, setSelectedDateData] = useState< {[key: string]: CustomCalendarProps} | null>(null);
@@ -179,7 +184,7 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
           </MenubarMenu>
         ))}
       </Menubar>
-      <ScrollArea className="h-[calc(100vh-60px)] w-full" ref={scrollAreaRef}>
+      <ScrollArea className="h-[calc(77vh-60px)] w-full" ref={scrollAreaRef}>
         {Object.entries(monthData).map(([monthYear, dates]) => (
           <div key={monthYear} className="mb-6">
             <h2 className="text-2xl font-bold mt-4 mb-4">{new Date(parseDate(dates[0].date)).toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
@@ -193,6 +198,8 @@ const CustomCalendar = (props: { data: {[key: string]: CustomCalendarProps }}) =
                 isDialogOpen={isDialogOpen} 
                 setIsDialogOpen={() => setIsDialogOpen(false)} 
                 data={selectedDateData}
+                transactions={props.transactions}
+                setTransactions={props.setTransactions}
                 />
             )}
       </ScrollArea>

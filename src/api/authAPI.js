@@ -1,8 +1,24 @@
 import axios from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
+axios.defaults.withCredentials = true
 export const authAPI = {
+    checkAuth: async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/check-auth`, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            if (response.status === 200) {
+                return true;
+            }
+            return false;
+        } catch (error) {
+            return false;
+            throw error.response?.data || error.message || error.detail;
+        }
+    },
     login: async (credentials) => {
         try {
             const formData = new FormData();
@@ -45,5 +61,54 @@ export const authAPI = {
             // console.log('error', error.response?.data || error.message); 
             throw error.response?.data || error.message;
         }
-    }
+    },
+    logout: async () => {
+        try {
+            const response = await axios.post(`${BASE_URL}/logout`, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
+    forgot_password: async (username) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/${username}/forgot-password`, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
+    confirm_forgot_password: async (username, credentials) => {
+        console.log('credentials:', credentials);
+        try {
+            const response = await axios.post(`${BASE_URL}/${username}/confirm-forgot-password`, credentials, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
+    change_password: async (username, credentials) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/${username}/change-password`, credentials, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
 };
