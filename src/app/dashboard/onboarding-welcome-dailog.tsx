@@ -281,7 +281,7 @@ function Expense({ isMobile, expense, setExpense, error }: ExpenseProps) {
       </div>
       <div className="mt-6">
       <DataTable 
-        type="income"
+        type="expense"
         isMain={false} 
         isMobile={isMobile || true} 
         transactions={expense} 
