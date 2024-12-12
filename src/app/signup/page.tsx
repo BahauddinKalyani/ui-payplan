@@ -36,13 +36,14 @@ const schema = z.object({
 function Signup() {
     const [loading, setLoading] = useState(false);
     const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+    const [privacyPolicy, setPrivacyPolicy] = useState(false);
     const { toast } = useToast();
     const router = useRouter();
     const defaultValues = {
         username: '',
         email: '',
         password: '',
-        privacy_policy: false,
+        privacy_policy: privacyPolicy,
     };
     const {
         register,
@@ -64,13 +65,8 @@ function Signup() {
                 username: data.username,
                 email: data.email,
                 password: data.password,
-                privacy_policy: 'false'
-            }
-            if (data.privacy_policy === true) {
-                creds['privacy_policy'] = 'false';
-            } else {
-                creds['privacy_policy'] = 'true';
-            }
+                privacy_policy: data.privacy_policy.toString(),
+            };
             const response = await authAPI.signup(creds);
             if (response.status === 200) {
                 localStorage.setItem('username', data.username);
@@ -166,7 +162,7 @@ function Signup() {
                                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                             </div>
                             <div className="flex items-center space-x-2">
-                                <Checkbox id="privacy_policy" defaultChecked={false} {...register('privacy_policy')} onCheckedChange={(value: boolean) => setValue('privacy_policy', value)} />
+                                <Checkbox id="privacy_policy" defaultChecked={privacyPolicy} {...register('privacy_policy')} onCheckedChange={(value: boolean) => {setValue('privacy_policy', value); setPrivacyPolicy(value)}} />
                                 <label htmlFor="privacy_policy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                     I agree to the <Link href="/privacy-policy" className="text-blue-500">Privacy Policy</Link>
                                 </label>
@@ -174,7 +170,7 @@ function Signup() {
                             {errors.privacy_policy && <p className="text-red-500 text-sm mt-1">{errors.privacy_policy.message}</p>}
                             <Button type="submit" className="w-full">Register</Button>
                         </form>
-                        <div className="relative">
+                        {/* <div className="relative">
                             <div className="absolute inset-0 flex items-center">
                                 <span className="w-full border-t"></span>
                             </div>
@@ -187,7 +183,7 @@ function Signup() {
                                 <path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"></path>
                             </svg>
                             Google
-                        </button>
+                        </button> */}
                         <p className="text-center mt-4 text-sm text-muted-foreground">
                             <Link
                                 href="/login"

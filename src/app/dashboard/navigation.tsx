@@ -46,7 +46,7 @@ export default function CustomNavigation(props: { isMobile: boolean }) {
           description: 'An error occurred while logging out',
           variant: 'destructive',
         });
-        console.error(error);
+        console.log(error);
       }
     }
     logout();

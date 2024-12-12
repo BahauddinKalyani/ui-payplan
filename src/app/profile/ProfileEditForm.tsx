@@ -82,7 +82,7 @@ export function ProfileEditForm({ avatars, userInfo, setUserInfo }: ProfileEditF
         }
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast({
         title: "Error",
         description: (error as { detail: string }).detail,

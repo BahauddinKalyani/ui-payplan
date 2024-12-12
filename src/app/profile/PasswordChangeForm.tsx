@@ -70,7 +70,7 @@ export function PasswordChangeForm() {
       }
       
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast({
         title: "Error",
         description: (error as { detail: string }).detail,

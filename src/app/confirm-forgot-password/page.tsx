@@ -71,7 +71,7 @@ function ConfirmFP() {
                 title: "Error",
                 description: "Reset password failed. " + (error as { detail: string }).detail,
                 variant: "destructive",
-                duration: 1000,
+                duration: 3000,
             });
             setLoading(false);
         }
